@@ -17,23 +17,23 @@ For your second project, you’ll be creating a recipe transformer. Your recipe 
 2. Parse it into the recipe data representation your group designs. Your parser should be able to recognize:
 Ingredients 
  - Ingredient name
- -- Quantity
- -- Measurement (cup, teaspoon, pinch, etc.)
- -- (optional) Descriptor (e.g. fresh, extra-virgin)
- -- (optional) Preparation (e.g. finely chopped)
+ - Quantity
+ - Measurement (cup, teaspoon, pinch, etc.)
+ - (optional) Descriptor (e.g. fresh, extra-virgin)
+ - (optional) Preparation (e.g. finely chopped)
  Tools – pans, graters, whisks, etc.
  Methods
- -- Primary cooking method (e.g. sauté, broil, boil, poach, etc.)
- -- (optional) Other cooking methods used (e.g. chop, grate, stir, shake, mince, crush, squeeze, etc.)
+ - Primary cooking method (e.g. sauté, broil, boil, poach, etc.)
+ - (optional) Other cooking methods used (e.g. chop, grate, stir, shake, mince, crush, squeeze, etc.)
  Steps – parse the directions into a series of steps that each consist of ingredients, tools, methods, and times
  3. Ask the user what kind of transformation they want to do.
- -- To and from vegetarian (REQUIRED)
- -- To and from healthy (REQUIRED)
- -- Style of cuisine (AT LEAST ONE REQUIRED)
- -- Additional Style of cuisine (OPTIONAL)
- -- DIY to easy (OPTIONAL)
- -- Double the amount or cut it by half (OPTIONAL)
- -- Cooking method (from bake to stir fry, for example) (OPTIONAL)
+ - To and from vegetarian (REQUIRED)
+ - To and from healthy (REQUIRED)
+ - Style of cuisine (AT LEAST ONE REQUIRED)
+ - Additional Style of cuisine (OPTIONAL)
+ - DIY to easy (OPTIONAL)
+ - Double the amount or cut it by half (OPTIONAL)
+ - Cooking method (from bake to stir fry, for example) (OPTIONAL)
 If you come up with your own transformation idea, feel free to ask if it would be an acceptable substitute. We encourage innovation.
 
 4. Transform the recipe along the requested dimension, using your system’s internal representation for ingredients, cooking methods, etc.
