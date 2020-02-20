@@ -16,7 +16,7 @@ For your second project, you’ll be creating a recipe transformer. Your recipe 
 1. Accept the URL of a recipe from AllRecipes.com, and programmatically fetch the page.
 2. Parse it into the recipe data representation your group designs. Your parser should be able to recognize:
 Ingredients 
- -- Ingredient name
+ - Ingredient name
  -- Quantity
  -- Measurement (cup, teaspoon, pinch, etc.)
  -- (optional) Descriptor (e.g. fresh, extra-virgin)
