@@ -19,48 +19,56 @@ class RecipeFetcher:
                page_graph.find_all('div', {'class':'grid-card-image-container'})]
 
     def scrape_recipe(self, recipe_url):
-        results = {}
+      results = {}
 
-        page_html = requests.get(recipe_url)
-        page_graph = BeautifulSoup(page_html.content)
+      page_html = requests.get(recipe_url)
+      page_graph = BeautifulSoup(page_html.content)
 
-        results['ingredients'] = [ingredient.text for ingredient in\
-                                  page_graph.find_all('span', {'itemprop':'recipeIngredient'})]
+      results['ingredients'] = [ingredient.text for ingredient in\
+                                page_graph.find_all('span', {'itemprop':'recipeIngredient'})]
 
-        results['directions'] = [direction.text.strip() for direction in\
-                                 page_graph.find_all('span', {'class':'recipe-directions__list--item'})
-                                 if direction.text.strip()]
+      results['directions'] = [direction.text.strip() for direction in\
+                                page_graph.find_all('span', {'class':'recipe-directions__list--item'})
+                                if direction.text.strip()]
 
-        results['nutrition'] = self.scrape_nutrition_facts(recipe_url)
-
-        return results
+      results['nutrition'] = self.scrape_nutrition_facts(recipe_url)
+      return results
     
     def scrape_nutrition_facts(self, recipe_url):
-        results = []
+      results = []
 
-        nutrition_facts_url = '%s/fullrecipenutrition' %(recipe_url)
+      nutrition_facts_url = '%s/fullrecipenutrition' %(recipe_url)
+      page_html = requests.get(nutrition_facts_url)
+      page_graph = BeautifulSoup(page_html.content, 'html.parser')
 
-        page_html = requests.get(nutrition_facts_url)
-        page_graph = BeautifulSoup(page_html.content)
+      r = re.compile("([0-9]*\.?[0-9]*)([a-zA-Z]+)")
+      # finds all rows with class="nutrition-row" 
+      for nutrient_row in page_graph.find_all(class_='nutrition-row'):
+          nutrient = {}
+          # separates into array of all the 'span' tags 
+          span_elements = nutrient_row.find_all('span')
+          # splits the first tag to ingredient name and ingredient quantity 
+          ingredient_data = span_elements[0].text.split(': ')
+          ingredient_name = ingredient_data[0]
+          ingredient_amount = ingredient_data[1]
+          # splits ingredient amount by amount and unit 
+          ingredient_amount_split = r.match(ingredient_amount).groups()
 
-        r = re.compile("([0-9]*\.?[0-9]*)([a-zA-Z]+)")
+          # add the results of nutrients to the list 
+          nutrient['name'] = ingredient_name
+          nutrient['amount'] = ingredient_amount_split[0]
+          nutrient['unit'] = ingredient_amount_split[1]
+          # only looks for daily value if there is a 4th entry, kinda jank wanted to search by class="daily-value" but wasn't working
+          if len(span_elements) == 4:
+            nutrient['daily_value'] = span_elements[3].text
+          results.append(nutrient)
 
-        print(page_graph)
-        # for nutrient_row in page_html:
-        #     nutrient = {}
-        #     print(nutrient_row)
-        #     # Fill out this to scrape and return:
-        #     # nutrient['name'], nutrient['amount'],
-        #     # nutrient['unit'], nutrient['daily_value']
-            
-        #     results.append(nutrient)
-
-        return results
-
+      return results
 
 rf = RecipeFetcher()
 meat_lasagna = rf.search_recipes('meat lasagna')[0]
-rf.scrape_recipe(meat_lasagna)
+recipe = rf.scrape_recipe(meat_lasagna)
+# print(recipe)
 
 """
 Should return:
