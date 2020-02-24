@@ -5,11 +5,13 @@ from instructions import *
 
 class recipe(object):
 
-    def __init__(self, ingredients=None, instructions=None):
+    def __init__(self, ingredients=None, instructions=None, tools = None):
         # list of ingredients objects
         self.ingredients = ingredients
         # instructions object
         self.instructions = instructions
+        # list of tools (str)
+        # self.tools = tools
     
     def to_healthy(self):
         # returns a copy of healthy version of recipe
