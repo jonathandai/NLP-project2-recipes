@@ -21,10 +21,10 @@ Ingredients
  - Measurement (cup, teaspoon, pinch, etc.)
  - (optional) Descriptor (e.g. fresh, extra-virgin)
  - (optional) Preparation (e.g. finely chopped)
- Tools – pans, graters, whisks, etc.
- Methods
- - Primary cooking method (e.g. sauté, broil, boil, poach, etc.)
- - (optional) Other cooking methods used (e.g. chop, grate, stir, shake, mince, crush, squeeze, etc.)
+ - Tools – pans, graters, whisks, etc.
+ - Methods: 
+  - Primary cooking method (e.g. sauté, broil, boil, poach, etc.)
+  - (optional) Other cooking methods used (e.g. chop, grate, stir, shake, mince, crush, squeeze, etc.)
  Steps – parse the directions into a series of steps that each consist of ingredients, tools, methods, and times
  3. Ask the user what kind of transformation they want to do.
  - To and from vegetarian (REQUIRED)
