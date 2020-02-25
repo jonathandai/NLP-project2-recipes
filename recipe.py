@@ -6,6 +6,7 @@ from instructions import *
 class recipe(object):
 
     def __init__(self, ingredients=None, instructions=None):
+        self.recipe_name = ""
         # list of ingredients objects
         self.ingredients = ingredients
         # instructions object
