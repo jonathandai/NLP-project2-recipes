@@ -1,5 +1,5 @@
 
-class ingredient(object):
+class Ingredient(object):
 
     def __init__(self, name, quanitity, unit):
         # TODO: Deal with parsing for standarized units

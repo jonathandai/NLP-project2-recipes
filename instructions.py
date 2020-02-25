@@ -1,4 +1,4 @@
-class instructions(object):
+class Instructions(object):
 
     def __init__(self, instructions, primary_cooking_method = None):
         self.instructions = instructions

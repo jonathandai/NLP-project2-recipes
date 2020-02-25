@@ -1,16 +1,18 @@
 import copy
 
-from ingredient import *
-from instructions import *
+from Ingredient import *
+from Instructions import *
 
-class recipe(object):
+class Recipe(object):
 
-    def __init__(self, ingredients=None, instructions=None):
-        self.recipe_name = ""
+    def __init__(self, recipe_name, ingredients=None, instructions=None):
+        self.recipe_name = recipe_name 
         # list of ingredients objects
         self.ingredients = ingredients
         # instructions object
         self.instructions = instructions
+        # list of tools (str)
+        # self.tools = tools
     
     def to_healthy(self):
         # returns a copy of healthy version of recipe
@@ -24,7 +26,7 @@ class recipe(object):
         healthy_instructions = self.instructions.to_healthy()
 
         # create new recipe object
-        healthy_recipe = recipe(healthy_ingredients, healthy_instructions)
+        healthy_recipe = Recipe(healthy_ingredients, healthy_instructions)
 
         return healthy_recipe
 
@@ -40,7 +42,7 @@ class recipe(object):
         
 
         # create new recipe object
-        veg_recipe = recipe(veg_ingredients, self.instructions)
+        veg_recipe = Recipe(veg_ingredients, self.instructions)
 
         return veg_recipe
 

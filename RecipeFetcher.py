@@ -7,10 +7,13 @@ import re
 
 class RecipeFetcher:
 
-    search_base_url = 'https://www.allrecipes.com/search/results/?wt=%s&sort=re'
+   def __init__(self):
+      # nothing needed yet?
+      print()
 
-    def search_recipes(self, keywords): 
-        search_url = self.search_base_url %(keywords.replace(' ','+'))
+   def search_recipes(self, keywords): 
+        search_base_url = 'https://www.allrecipes.com/search/results/?wt=%s&sort=re'
+        search_url = search_base_url %(keywords.replace(' ','+'))
 
         page_html = requests.get(search_url)
         page_graph = BeautifulSoup(page_html.content)
@@ -18,11 +21,8 @@ class RecipeFetcher:
         return [recipe.a['href'] for recipe in\
                page_graph.find_all('div', {'class':'grid-card-image-container'})]
 
-    def scrape_recipe(self, recipe_url):
+   def scrape_recipe(self, recipe_url):
       results = {}
-
-      # regex for finding necessary tools
-      tool_regex = '(pan|skillet|pot|sheet|grate|whisk|griddle|bowl|oven|dish)'
 
       page_html = requests.get(recipe_url)
       page_graph = BeautifulSoup(page_html.content)
@@ -35,26 +35,24 @@ class RecipeFetcher:
                                 if direction.text.strip()]
 
       results['nutrition'] = self.scrape_nutrition_facts(recipe_url)
-
-      # results['tools'] = self.find_tools(results['directions'])
+      results['tools'] = self.find_tools(results['directions'])
+      results['methods'] = self.find_cooking_methods(results['directions'])
 
       return results
 
-    # def find_tools(self, instruction_words):
-    #   """
-    #   looks for any and all cooking tools apparent in the instruction text by using the tool_indicator_regex
-    #   variable
-    #   """
-    #   tool_regex = '(pan|skillet|pot|sheet|grate|whisk|griddle|bowl|oven|dish)'
-    #   cooking_tools = []
-    #   for step in instruction_words:
-    #     for word in step:
-    #       if re.search(tool_regex, word, flags=re.I):
-    #         cooking_tools.append(word)
-    #     wordset = set(cooking_tools)
-    #   return wordset
+   def find_tools(self, steps):
+      tool_regex = '(pan|skillet|pot|sheet|grate|whisk|griddle|bowl|oven|dish)'
+      instructions = " ".join(steps)
+      cooking_tools = re.findall(tool_regex, instructions)
+      return set(cooking_tools)
 
-    def scrape_nutrition_facts(self, recipe_url):
+   def find_cooking_methods(self, steps):
+      method_regex = '(boil|bake|simmer|roast|fry|deep fry|deep-fry|stiry fry|stir-fry|grill|steam|sautee)'
+      instructions = " ".join(steps)
+      cooking_methods = re.findall(method_regex, instructions)
+      return set(cooking_methods)
+
+   def scrape_nutrition_facts(self, recipe_url):
       results = []
 
       nutrition_facts_url = '%s/fullrecipenutrition' %(recipe_url)
@@ -85,14 +83,14 @@ class RecipeFetcher:
 
       return results
 
-rf = RecipeFetcher()
-meat_lasagna = rf.search_recipes('meat lasagna')[0]
-recipe = rf.scrape_recipe(meat_lasagna)
-print(recipe)
+   def find_recipe(self, food_name): 
+      food_search = self.search_recipes(food_name)[0]
+      recipe = self.scrape_recipe(food_search)
+      # print(recipe)
+      return recipe
 
 
 # encode to classes
-# find tools
 
 """
 Returns'
