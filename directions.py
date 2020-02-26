@@ -1,13 +1,13 @@
-class Instructions(object):
+class Directions(object):
 
-    def __init__(self, instructions, primary_cooking_method = None):
-        self.instructions = instructions
+    def __init__(self, directions, primary_cooking_method = None):
+        self.directions = directions
         if primary_cooking_method == None:
-            self.primary_cooking_method = self.get_primary_cooking_method(instructions)
+            self.primary_cooking_method = self.get_primary_cooking_method(directions)
         else:
             self.primary_cooking_method = primary_cooking_method
         
-    def get_primary_cooking_method(self, instructions):
+    def get_primary_cooking_method(self, directions):
         # extra primary cooking method from insutrctions
         return ""
 
