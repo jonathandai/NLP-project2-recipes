@@ -12,18 +12,6 @@ class Recipe(object):
         self.ingredients = ingredients
         # directions object
         self.directions = directions
-        # primary cooking method
-        # if primary_cooking_method == None:
-        #     self.get_primary_cooking_method = self.get_primary_cooking_method(directions, methods)
-        # # list of tools (str)
-        # self.tools = tools
-    
-    def get_primary_cooking_method(self, directions, methods):
-        print(directions)
-        print(methods)
-        return ""
-        # for direction in directions:
-        #     do = 'nothing'
     
     def to_healthy(self):
         # returns a copy of healthy version of recipe
@@ -56,3 +44,32 @@ class Recipe(object):
         veg_recipe = Recipe(veg_ingredients, self.directions)
 
         return veg_recipe
+        
+   def map_meat_to_cooking_method(self, directions, methods):
+      '''
+      returns dictionary of mapping and meat cooking method
+      '''
+      meat_list = [r'ground (chicken|turkey|beef|lamb|pork)', 'chicken', 'turkey', 'beef', 'lamb', 'pork', 'fish'] #TODO: potentially add types of shellfish
+      output = {}
+      
+      meat_directions = {}
+      exclude_list = []
+      cur_meat = None
+      # get directions with meats only
+      for direction in directions:
+         for meat in meat_list:
+            if meat in exclude_list:
+               continue
+            if cur_meat != None:
+               for method in methods:
+                  if method in direction:
+                     output[cur_meat] = method
+            else:
+               found_meat = re.search(meat, direction)
+               if found_meat:
+                  cur_meat = found_meat[0]
+                  meat_directions[found_meat[0]] = direction
+                  # prevent duplicates with ground meats
+                  to_exclude = found_meat[0].split()[1]
+                  exclude_list.append(to_exclude)   
+      return output
