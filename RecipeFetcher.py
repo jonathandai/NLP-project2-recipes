@@ -14,46 +14,30 @@ class RecipeFetcher:
    def search_recipes(self, keywords): 
         search_base_url = 'https://www.allrecipes.com/search/results/?wt=%s&sort=re'
         search_url = search_base_url %(keywords.replace(' ','+'))
-
+        print(search_url)
         page_html = requests.get(search_url)
         page_graph = BeautifulSoup(page_html.content)
         return [recipe.a['href'] for recipe in\
                page_graph.find_all('div', {'class':'grid-card-image-container'})]
 
-   def scrape_recipe(self, food_name, recipe_url, to_recipe_object=False):
+   def scrape_recipe(self, food_name, recipe_url,):
+      results = {}
+
       page_html = requests.get(recipe_url)
       page_graph = BeautifulSoup(page_html.content)
-      
-      ingredients = [ingredient.text for ingredient in\
-                                 page_graph.find_all('span', {'itemprop':'recipeIngredient'})]
-      
-      directions = [direction.text.strip() for direction in\
-                                 page_graph.find_all('span', {'class':'recipe-directions__list--item'})
-                                 if direction.text.strip()]
-      tools = self.scrape_nutrition_facts(recipe_url)
 
-      methods = self.find_cooking_methods(directions)
-      
-      primary_cooking_methods = self.map_meat_to_cooking_method(directions, methods)
-      
-      results = None
-      if to_recipe_object:
-         results = Recipe(food_name, ingredients=ingredients, directions=directions, methods=methods, primary_cooking_method=primary_cooking_methods)
-      else:
-         results = {}
+      results['ingredients'] = [ingredient.text for ingredient in\
+                                page_graph.find_all('span', {'itemprop':'recipeIngredient'})]
 
-         results['ingredients'] = ingredients
+      results['directions'] = [direction.text.strip() for direction in\
+                                page_graph.find_all('span', {'class':'recipe-directions__list--item'})
+                                if direction.text.strip()]
 
-         results['directions'] = directions
-
-         results['tools'] = tools
-
-         results['methods'] = methods
-
-         results['nutrition'] = self.scrape_nutrition_facts(recipe_url)
+      results['nutrition'] = self.scrape_nutrition_facts(recipe_url)
+      results['tools'] = self.find_tools(results['directions'])
+      results['methods'] = self.find_cooking_methods(results['directions'])
 
       return results
-
    def find_tools(self, steps):
       tool_regex = '(pan|skillet|pot|sheet|grate|whisk|griddle|bowl|oven|dish)'
       directions = " ".join(steps)
@@ -76,7 +60,6 @@ class RecipeFetcher:
       meat_directions = {}
       exclude_list = []
       cur_meat = None
-      cur_method = None
       # get directions with meats only
       for direction in directions:
          for meat in meat_list:
@@ -93,10 +76,7 @@ class RecipeFetcher:
                   meat_directions[found_meat[0]] = direction
                   # prevent duplicates with ground meats
                   to_exclude = found_meat[0].split()[1]
-                  exclude_list.append(to_exclude)
-      # print('directions with meat')
-      # print(meat_directions) 
-      # print(output)      
+                  exclude_list.append(to_exclude)   
       return output
 
    def scrape_nutrition_facts(self, recipe_url):
@@ -137,11 +117,10 @@ class RecipeFetcher:
       return recipe
 
 # testing to_veg
-print('fuck')
 RF = RecipeFetcher()
-meat_lasagna = RF.find_recipe('meat lasagna')
-
-
+recipe = RF.find_recipe('chicken alfredo')
+# recipe = RF.find_recipe('meat lasagna')
+print(recipe)
 # encode to classes
 
 """
