@@ -106,6 +106,7 @@ RF = RecipeFetcher()
 # recipe = RF.find_recipe('chicken alfredo')
 recipe = RF.find_recipe('meat lasagna')
 recipe_object = Recipe('meat lasagna', recipe)
+veg_recipe = recipe_object.to_veg()
 
 # print(recipe)
 # encode to classes
