@@ -8,7 +8,7 @@ class RecipeFetcher:
 
    def __init__(self):
       # nothing needed yet?
-      print()
+      pass
 
    def search_recipes(self, keywords): 
         search_base_url = 'https://www.allrecipes.com/search/results/?wt=%s&sort=re'
@@ -99,7 +99,7 @@ class RecipeFetcher:
          recipe = self.scrape_recipe(food_name, food_search)
          return recipe
       except: 
-         print("No recipe results for" , food_name, "found, please try another search.")
+         print("No recipe results for", food_name, "found, please try another search.")
 
 # testing to_veg
 # RF = RecipeFetcher()

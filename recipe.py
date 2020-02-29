@@ -2,16 +2,22 @@ import copy
 import re 
 from Ingredient import *
 from directions import *
+from recipe import *
 # from RecipeFetcher import *
 
 class Recipe(object):
 
-    def __init__(self, recipe_name, ingredients=None, directions=None, methods=None, primary_cooking_method=None):
+    def __init__(self, recipe_name, url=None, ingredients=None, directions=None, tools=None, methods=None, nutrition=None, primary_cooking_method=None):
         self.recipe_name = recipe_name 
+        self.url = url
         # list of ingredients objects
         self.ingredients = ingredients
         # directions object
         self.directions = directions
+        self.tools = tools 
+        self.methods = methods
+        self.nutrition = nutrition
+        self.primary_cooking_method = primary_cooking_method
     
     def to_healthy(self):
         # returns a copy of healthy version of recipe
@@ -28,7 +34,6 @@ class Recipe(object):
         healthy_recipe = Recipe(healthy_ingredients, healthy_directions)
 
         return healthy_recipe
-
         
 
     def to_veg(self):
@@ -73,3 +78,6 @@ class Recipe(object):
                         to_exclude = found_meat[0].split()[1]
                         exclude_list.append(to_exclude)   
         return output
+
+    def to_cuisine(self, cuisine): 
+        pass 
