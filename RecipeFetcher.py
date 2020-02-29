@@ -13,42 +13,53 @@ class RecipeFetcher:
    def search_recipes(self, keywords): 
         search_base_url = 'https://www.allrecipes.com/search/results/?wt=%s&sort=re'
         search_url = search_base_url %(keywords.replace(' ','+'))
-        print(search_url)
         page_html = requests.get(search_url)
-        page_graph = BeautifulSoup(page_html.content)
+        page_graph = BeautifulSoup(page_html.content, features="html.parser")
         return [recipe.a['href'] for recipe in\
                page_graph.find_all('div', {'class':'grid-card-image-container'})]
 
-   def scrape_recipe(self, food_name, recipe_url,):
+   def scrape_recipe(self, food_name, recipe_url):
       results = {}
-
-      print(recipe_url, '_____________________')
       page_html = requests.get(recipe_url)
-      page_graph = BeautifulSoup(page_html.content)
+      page_graph = BeautifulSoup(page_html.content, features="html.parser")
+      
+      # Recipe name 
+      results['name'] = [name.text for name in page_graph.find_all('h1', {'class':'headline'})] + [name.text for name in page_graph.find_all('h1', {'itemprop':'name'})] 
 
+      # Recipe URL
+      results['top_url'] = recipe_url
+ 
+      # Recipe ingredients list  
       ing_format_props = [ingredient.text for ingredient in page_graph.find_all('span', {'itemprop':'recipeIngredient'})] 
       ing_format_class = [ingredient.text.strip() for ingredient in page_graph.find_all('span', {'class': 'ingredients-item-name'})] 
       results['ingredients'] = ing_format_props + ing_format_class
 
-      rec_format1 = [direction.text.strip() for direction in page_graph.find_all('span', {'class':'recipe-directions__list--item'}) if direction.text.strip()]
-      rec_format2 = [direction.text.strip() for direction in page_graph.select('.instructions-section .subcontainer .section-body')]
-      results['directions'] = rec_format1 + rec_format2
+      # Recipe directions list 
+      dir_format1 = [direction.text.strip() for direction in page_graph.find_all('span', {'class':'recipe-directions__list--item'}) if direction.text.strip()]
+      dir_format2 = [direction.text.strip() for direction in page_graph.select('.instructions-section .subcontainer .section-body')]
+      results['directions'] = dir_format1 + dir_format2
 
+      # Recipe nutrition facts 
       results['nutrition'] = self.scrape_nutrition_facts(recipe_url)
+
+      # Recipe tools used 
       results['tools'] = self.find_tools(results['directions'])
+
+      # Recipe methods used
       results['methods'] = self.find_cooking_methods(results['directions'])
 
       return results
+
    def find_tools(self, steps):
       tool_regex = '(pan|skillet|pot|sheet|grate|whisk|griddle|bowl|oven|dish)'
       directions = " ".join(steps)
-      cooking_tools = re.findall(tool_regex, directions)
+      cooking_tools = re.findall(tool_regex, directions.lower())
       return set(cooking_tools)
 
    def find_cooking_methods(self, steps):
       method_regex = '(boil|bake|simmer|roast|fry|deep fry|deep-fry|stiry fry|stir-fry|grill|steam|sautee)'
       directions = " ".join(steps)
-      cooking_methods = re.findall(method_regex, directions)
+      cooking_methods = re.findall(method_regex, directions.lower())
       return set(cooking_methods)
 
    def scrape_nutrition_facts(self, recipe_url):
