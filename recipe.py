@@ -1,6 +1,7 @@
 import copy
 import re 
-from ingredient import *
+from Ingredient import *
+from directions import *
 # from RecipeFetcher import *
 COOKING_METHOD_TO_SUBSTITUTE = { #TODO: add shellfish
     'boil':{
@@ -114,8 +115,8 @@ COOKING_METHOD_TO_SUBSTITUTE = { #TODO: add shellfish
 }
 class Recipe(object):
 
-    def __init__(self, recipe_name, recipe_dic):
-        self.recipe_name = recipe_name
+    def __init__(self, recipe_dic):
+        self.recipe_name = recipe_dic["name"]
         # list of ingredients objects
         ingredients_list = recipe_dic['ingredients']
         ingredient_objects = []
@@ -124,7 +125,7 @@ class Recipe(object):
         self.ingredients = ingredient_objects
         # directions object
         self.directions = recipe_dic['directions']
-    
+        
     def to_healthy(self):
         # returns a copy of healthy version of recipe
 
@@ -137,10 +138,9 @@ class Recipe(object):
         healthy_directions = self.directions.to_healthy()
 
         # create new recipe object
-        healthy_recipe = Recipe(healthy_ingredients, healthy_directions)
+        healthy_recipe = Recipe(healthy_directions)
 
         return healthy_recipe
-
         
 
     def to_veg(self):
@@ -149,10 +149,11 @@ class Recipe(object):
         methods = ['boil', 'bake','simmer','roast','fry','deep fry','deep-fry','stiry fry','stir-fry','grill','steam','sautee']
         meats_to_cooking_method = self.map_meat_to_cooking_method(self.directions, methods)
         meats_to_subtitute = self.meat_to_substitute(meats_to_cooking_method)
+
         # make ingredients veg
-        # veg_ingredients = copy.deepcopy(self.ingredients)
-        # for ingredient in veg_ingredients:
-        #     ingredient = ingredient.to_veg()
+        veg_ingredients = copy.deepcopy(self.ingredients)
+        for ingredient in veg_ingredients:
+            ingredient = ingredient.to_veg()
         
         # create new recipe object
         # veg_recipe = Recipe(veg_ingredients, self.directions)
@@ -199,3 +200,5 @@ class Recipe(object):
                         exclude_list.append(to_exclude)   
         return output
 
+    def to_cuisine(self, cuisine): 
+        return cuisine 

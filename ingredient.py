@@ -52,6 +52,8 @@ class Ingredient(object):
     
     def to_veg(self):
         # convert ingredient to veg substitutde
-        pass
+        text = nltk.word_tokenize(ingredient)
+        tokens = nltk.pos_tag(text)
+
     
 
