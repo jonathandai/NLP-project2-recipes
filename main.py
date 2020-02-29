@@ -28,7 +28,8 @@ def parse_ingredient(ingredient):
     return name, quantity, unit
 
 # Test to cuisine 
-
+recipe = Recipe(recipe_json)
+recipe.to_cuisine("chinese")
 
 # map to relevant classes 
 
