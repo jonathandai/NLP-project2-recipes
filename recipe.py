@@ -1,17 +1,22 @@
 import copy
 import re 
-from Ingredient import *
-from directions import *
+from ingredient import *
 # from RecipeFetcher import *
-
 class Recipe(object):
 
-    def __init__(self, recipe_name, ingredients=None, directions=None, methods=None, primary_cooking_method=None):
-        self.recipe_name = recipe_name 
+    def __init__(self, recipe_name, recipe_dic):
+        self.recipe_name = recipe_name
         # list of ingredients objects
-        self.ingredients = ingredients
+        ingredients_list = recipe_dic['ingredients']
+        ingredient_objects = []
+        for ing in ingredients_list:
+            ingredient_objects.append(Ingredient(ing))
+        print(ingredient_objects[1].name)
+        print(ingredient_objects[1].unit)
+        print(ingredient_objects[1].quantity)
+        self.ingredients = ingredient_objects
         # directions object
-        self.directions = directions
+        self.directions = recipe_dic['directions']
     
     def to_healthy(self):
         # returns a copy of healthy version of recipe
@@ -73,3 +78,4 @@ class Recipe(object):
                         to_exclude = found_meat[0].split()[1]
                         exclude_list.append(to_exclude)   
         return output
+

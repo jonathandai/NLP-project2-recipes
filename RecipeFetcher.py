@@ -102,9 +102,11 @@ class RecipeFetcher:
          print("No recipe results for" , food_name, "found, please try another search.")
 
 # testing to_veg
-# RF = RecipeFetcher()
+RF = RecipeFetcher()
 # recipe = RF.find_recipe('chicken alfredo')
-# recipe = RF.find_recipe('meat lasagna')
+recipe = RF.find_recipe('meat lasagna')
+recipe_object = Recipe('meat lasagna', recipe)
+
 # print(recipe)
 # encode to classes
 
