@@ -1,8 +1,8 @@
 from bs4 import BeautifulSoup
-
 import requests
-
 import re
+
+from recipe import Recipe
 
 
 class RecipeFetcher:
@@ -14,14 +14,13 @@ class RecipeFetcher:
    def search_recipes(self, keywords): 
         search_base_url = 'https://www.allrecipes.com/search/results/?wt=%s&sort=re'
         search_url = search_base_url %(keywords.replace(' ','+'))
-
+        print(search_url)
         page_html = requests.get(search_url)
         page_graph = BeautifulSoup(page_html.content)
-
         return [recipe.a['href'] for recipe in\
                page_graph.find_all('div', {'class':'grid-card-image-container'})]
 
-   def scrape_recipe(self, recipe_url):
+   def scrape_recipe(self, food_name, recipe_url,):
       results = {}
 
       print(recipe_url, '_____________________')
@@ -40,17 +39,16 @@ class RecipeFetcher:
       results['methods'] = self.find_cooking_methods(results['directions'])
 
       return results
-
    def find_tools(self, steps):
       tool_regex = '(pan|skillet|pot|sheet|grate|whisk|griddle|bowl|oven|dish)'
-      instructions = " ".join(steps)
-      cooking_tools = re.findall(tool_regex, instructions)
+      directions = " ".join(steps)
+      cooking_tools = re.findall(tool_regex, directions)
       return set(cooking_tools)
 
    def find_cooking_methods(self, steps):
       method_regex = '(boil|bake|simmer|roast|fry|deep fry|deep-fry|stiry fry|stir-fry|grill|steam|sautee)'
-      instructions = " ".join(steps)
-      cooking_methods = re.findall(method_regex, instructions)
+      directions = " ".join(steps)
+      cooking_methods = re.findall(method_regex, directions)
       return set(cooking_methods)
 
    def scrape_nutrition_facts(self, recipe_url):
@@ -86,11 +84,15 @@ class RecipeFetcher:
 
    def find_recipe(self, food_name): 
       food_search = self.search_recipes(food_name)[0]
-      recipe = self.scrape_recipe(food_search)
-      print(recipe)
+      recipe = self.scrape_recipe(food_name, food_search)
+      # print(recipe)
       return recipe
 
-
+# testing to_veg
+RF = RecipeFetcher()
+# recipe = RF.find_recipe('chicken alfredo')
+recipe = RF.find_recipe('meat lasagna')
+print(recipe)
 # encode to classes
 
 """
