@@ -1,6 +1,6 @@
 import copy
-
-from ingredient import *
+import re 
+from Ingredient import *
 from directions import *
 # from RecipeFetcher import *
 
@@ -45,31 +45,31 @@ class Recipe(object):
 
         return veg_recipe
         
-   def map_meat_to_cooking_method(self, directions, methods):
-      '''
-      returns dictionary of mapping and meat cooking method
-      '''
-      meat_list = [r'ground (chicken|turkey|beef|lamb|pork)', 'chicken', 'turkey', 'beef', 'lamb', 'pork', 'fish'] #TODO: potentially add types of shellfish
-      output = {}
-      
-      meat_directions = {}
-      exclude_list = []
-      cur_meat = None
-      # get directions with meats only
-      for direction in directions:
-         for meat in meat_list:
-            if meat in exclude_list:
-               continue
-            if cur_meat != None:
-               for method in methods:
-                  if method in direction:
-                     output[cur_meat] = method
-            else:
-               found_meat = re.search(meat, direction)
-               if found_meat:
-                  cur_meat = found_meat[0]
-                  meat_directions[found_meat[0]] = direction
-                  # prevent duplicates with ground meats
-                  to_exclude = found_meat[0].split()[1]
-                  exclude_list.append(to_exclude)   
-      return output
+    def map_meat_to_cooking_method(self, directions, methods):
+        '''
+        returns dictionary of mapping and meat cooking method
+        '''
+        meat_list = [r'ground (chicken|turkey|beef|lamb|pork)', 'chicken', 'turkey', 'beef', 'lamb', 'pork', 'fish'] #TODO: potentially add types of shellfish
+        output = {}
+
+        meat_directions = {}
+        exclude_list = []
+        cur_meat = None
+        # get directions with meats only
+        for direction in directions:
+            for meat in meat_list:
+                if meat in exclude_list:
+                    continue
+                if cur_meat != None:
+                    for method in methods:
+                        if method in direction:
+                            output[cur_meat] = method
+                else:
+                    found_meat = re.search(meat, direction)
+                    if found_meat:
+                        cur_meat = found_meat[0]
+                        meat_directions[found_meat[0]] = direction
+                        # prevent duplicates with ground meats
+                        to_exclude = found_meat[0].split()[1]
+                        exclude_list.append(to_exclude)   
+        return output

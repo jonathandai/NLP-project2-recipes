@@ -1,7 +1,6 @@
 from bs4 import BeautifulSoup
 import requests
 import re
-
 from recipe import Recipe
 
 
@@ -27,12 +26,13 @@ class RecipeFetcher:
       page_html = requests.get(recipe_url)
       page_graph = BeautifulSoup(page_html.content)
 
-      results['ingredients'] = [ingredient.text for ingredient in\
-                                page_graph.find_all('span', {'itemprop':'recipeIngredient'})]
+      ing_format_props = [ingredient.text for ingredient in page_graph.find_all('span', {'itemprop':'recipeIngredient'})] 
+      ing_format_class = [ingredient.text.strip() for ingredient in page_graph.find_all('span', {'class': 'ingredients-item-name'})] 
+      results['ingredients'] = ing_format_props + ing_format_class
 
-      results['directions'] = [direction.text.strip() for direction in\
-                                page_graph.find_all('span', {'class':'recipe-directions__list--item'})
-                                if direction.text.strip()]
+      rec_format1 = [direction.text.strip() for direction in page_graph.find_all('span', {'class':'recipe-directions__list--item'}) if direction.text.strip()]
+      rec_format2 = [direction.text.strip() for direction in page_graph.select('.instructions-section .subcontainer .section-body')]
+      results['directions'] = rec_format1 + rec_format2
 
       results['nutrition'] = self.scrape_nutrition_facts(recipe_url)
       results['tools'] = self.find_tools(results['directions'])
@@ -83,16 +83,18 @@ class RecipeFetcher:
       return results
 
    def find_recipe(self, food_name): 
-      food_search = self.search_recipes(food_name)[0]
-      recipe = self.scrape_recipe(food_name, food_search)
-      # print(recipe)
-      return recipe
+      try: 
+         food_search = self.search_recipes(food_name)[0]
+         recipe = self.scrape_recipe(food_name, food_search)
+         return recipe
+      except: 
+         print("No recipe results for" , food_name, "found, please try another search.")
 
 # testing to_veg
-RF = RecipeFetcher()
+# RF = RecipeFetcher()
 # recipe = RF.find_recipe('chicken alfredo')
-recipe = RF.find_recipe('meat lasagna')
-print(recipe)
+# recipe = RF.find_recipe('meat lasagna')
+# print(recipe)
 # encode to classes
 
 """
