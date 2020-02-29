@@ -41,9 +41,18 @@ class Ingredient(object):
                     name = ' '.join(tokens[index+1:])
                 else:
                     name = ' '.join(tokens[index:])
+        
+        prep = ""
+        if ", " in name:
+            print(name, '-----')
+            name_split_comma = name.split(',', 1)
+            name = name_split_comma[0]
+            prep = name_split_comma[1]
+
         self.name = name
         self.quantity = quantity
         self.unit = unit
+        self.prep = prep 
 
     # def to_healthy(self):
     #     # convert ingredient to healthy substitute

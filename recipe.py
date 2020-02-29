@@ -1,6 +1,6 @@
 import copy
 import re 
-from Ingredient import *
+from ingredient import *
 from directions import *
 # from RecipeFetcher import *
 class Recipe(object):
@@ -12,9 +12,9 @@ class Recipe(object):
         ingredient_objects = []
         for ing in ingredients_list:
             ingredient_objects.append(Ingredient(ing))
-        print(ingredient_objects[1].name)
-        print(ingredient_objects[1].unit)
-        print(ingredient_objects[1].quantity)
+        # print(ingredient_objects[1].name)
+        # print(ingredient_objects[1].unit)
+        # print(ingredient_objects[1].quantity)
         self.ingredients = ingredient_objects
         # directions object
         self.directions = recipe_dic['directions']
@@ -79,5 +79,8 @@ class Recipe(object):
                         exclude_list.append(to_exclude)   
         return output
 
-    def to_cuisine(self, cuisine): 
+    def to_cuisine(self, cuisine):
+        for i in self.ingredients:
+            print("name:", i.name, "// unit:",i.unit, "// quantity:",i.quantity, "// prep:", i.prep)
+        
         return cuisine 
