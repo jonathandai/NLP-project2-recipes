@@ -4,7 +4,7 @@ from RecipeFetcher import *
 rf = RecipeFetcher()
 
 # grabs meat lasagna recipe 
-recipe_json = rf.find_recipe("meat lasagna") 
+recipe_json = rf.find_recipe("chicken alfredo") 
 
 # map to relevant classes 
 

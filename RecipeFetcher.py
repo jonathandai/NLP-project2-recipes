@@ -24,6 +24,7 @@ class RecipeFetcher:
    def scrape_recipe(self, recipe_url):
       results = {}
 
+      print(recipe_url, '_____________________')
       page_html = requests.get(recipe_url)
       page_graph = BeautifulSoup(page_html.content)
 
@@ -86,7 +87,7 @@ class RecipeFetcher:
    def find_recipe(self, food_name): 
       food_search = self.search_recipes(food_name)[0]
       recipe = self.scrape_recipe(food_search)
-      # print(recipe)
+      print(recipe)
       return recipe
 
 
