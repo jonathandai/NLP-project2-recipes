@@ -89,6 +89,8 @@ class Ingredient(object):
         self.prep = prep
         self.descriptor = descriptors
 
+    def __repr__(self):
+        return "name: " + self.name + " // unit: "+ self.unit + " // quantity: " + self.quantity + " // prep: " + self.prep + "\n"
 
     def to_healthy(self):
         # convert ingredient to healthy substitute
@@ -96,13 +98,8 @@ class Ingredient(object):
             if key in self.name:
                 self.name = healthy_substitutes[key]
 
-    def from_healthy(self):
-        for key in unhealthy_substitutes:
-            if key in self.name:
-                self.name = unhealthy_substitutes[key]
-        print(self.descriptor)
-
-
-    # def to_veg(self):
-    #     # convert ingredient to veg substitutde
-    #     pass
+    def to_veg(self, meats_to_substitute):
+        for meat, substitute in meats_to_substitute.items():
+            if meat in self.name:
+                self.name = substitute
+                return
