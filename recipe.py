@@ -1,7 +1,6 @@
 import copy
 import re
 from ingredient import *
-<<<<<<< HEAD
 
 from RecipeFetcher import *
 # COOKING_METHOD_TO_SUBSTITUTE = { #TODO: add shellfish
@@ -341,11 +340,6 @@ from RecipeFetcher import *
 #         'clams': 'lentils'
 #     }
 # }
-=======
-import json
-import random 
-# from RecipeFetcher import *
->>>>>>> ff6ce51f5e8bcedd6dba4380d4d1bf9ba195be97
 class Recipe(object):
 
     def __init__(self, recipe_dic):
@@ -381,7 +375,7 @@ class Recipe(object):
             "binder": binders,
         }
 
-        
+
     def to_healthy(self):
         # returns a copy of healthy version of recipe
 
@@ -412,6 +406,34 @@ class Recipe(object):
 
         return healthy_recipe
 
+    def from_healthy(self):
+        #returns copy of unhealthy versio of recipe
+
+        unhealthy_ingredients = copy.deepcopy(self.ingredients)
+        for ingredient in unhealthy_ingredients:
+            ingredient = ingredient.from_healthy()
+
+        unhealthy_directions = copy.deepcopy(self.directions)
+
+        for i in range(len(unhealthy_directions)):
+            curr_direction = unhealthy_directions[i]
+            #print(curr_direction)
+            for healthy_ing in unhealthy_substitutes:
+                if healthy_ing in curr_direction:
+                    curr_direction = curr_direction.replace(healthy_ing, unhealthy_substitutes[healthy_ing])
+                    unhealthy_directions[i] = curr_direction
+                    #print(curr_direction)
+                # elif "bake" in curr_direction:
+                #     curr_direction = curr_direction.replace("bake", "fry")
+                #     unhealthy_directions[i] = curr_direction
+
+        unhealthy_recipe = copy.deepcopy(self)
+
+        # create new recipe object
+        unhealthy_recipe.ingredients = unhealthy_ingredients
+        unhealthy_recipe.directions = unhealthy_directions
+
+        return unhealthy_recipe
 
     def to_veg(self):
     #     # returns a copy of vegetarian version of recipe
@@ -420,9 +442,8 @@ class Recipe(object):
     #     veg_ingredients = copy.deepcopy(self.ingredients)
     #     for ingredient in veg_ingredients:
     #         ingredient = ingredient.to_veg()
-        
 
-<<<<<<< HEAD
+
         return veg_recipe
 
     def meat_to_substitute(self, meat_to_cooking_method):
@@ -434,13 +455,9 @@ class Recipe(object):
             else:
                 output[meat] = COOKING_METHOD_TO_SUBSTITUTE[method]['ground']
         return output
-=======
-    #     # create new recipe object
-    #         veg_recipe = Recipe(self.directions)
->>>>>>> ff6ce51f5e8bcedd6dba4380d4d1bf9ba195be97
 
     #     return veg_recipe
-        
+
     # def map_meat_to_cooking_method(self, directions, methods):
     #     '''
     #     returns dictionary of mapping and meat cooking method
@@ -467,7 +484,7 @@ class Recipe(object):
     #                     meat_directions[found_meat[0]] = direction
     #                     # prevent duplicates with ground meats
     #                     to_exclude = found_meat[0].split()[1]
-    #                     exclude_list.append(to_exclude)   
+    #                     exclude_list.append(to_exclude)
     #     return output
         pass
 
@@ -492,15 +509,14 @@ class Recipe(object):
     #                     meat_directions[found_meat[0]] = direction
     #                     # prevent duplicates with ground meats
     #                     to_exclude = found_meat[0].split()[1]
-    #                     exclude_list.append(to_exclude)   
-    
+    #                     exclude_list.append(to_exclude)
+
 
     def in_food_group(self, ingredient):
-        
+
         '''
         Checks if a string (ingredient) is in one of the ingredient text files
         '''
-<<<<<<< HEAD
         meat_list = [r'ground (chicken|turkey|beef|lamb|pork)', 'chicken', 'turkey', 'beef', 'lamb', 'pork', 'fish'] #TODO: potentially add types of shellfish
         output = {}
 
@@ -526,12 +542,11 @@ class Recipe(object):
                         # to_exclude = found_meat[0].split()[1]
                         # exclude_list.append(to_exclude)
         return output
-=======
         for fg in self.food_groups:
             if any(word in ingredient for word in self.food_groups[fg]):
                 return fg
         return False
-        
+
     def to_chinese(self):
         chinese_cuisine = {
             "spice": ["garlic", "ginger", "clove", "star anise", "peppercorn", "cumin", "sesame seed", "five spice", "sichuan", "white pepper", "bay leaf"],
@@ -543,16 +558,15 @@ class Recipe(object):
             "restriction": ["milk", "cheese", "cream"]
         }
 
-        universal_ingredients = ['salt'] 
->>>>>>> ff6ce51f5e8bcedd6dba4380d4d1bf9ba195be97
+        universal_ingredients = ['salt']
 
         for i in self.ingredients:
-<<<<<<< HEAD
+
             print("name:", i.name, "// unit:",i.unit, "// quantity:",i.quantity, "// prep:", i.prep)
 
         return cuisine
-=======
-            print("name:", i.name, "// unit:", i.unit, "// quantity:", i.quantity, "// prep:", i.prep)
+
+        print("name:", i.name, "// unit:", i.unit, "// quantity:", i.quantity, "// prep:", i.prep)
         print('----------------------------------------')
         ingredient_split = {
             "fruit": [],
@@ -563,9 +577,9 @@ class Recipe(object):
             "binder": [],
         }
 
-        # chinese version of recipe json 
-        ch_json = self.recipe_dic.copy() 
-        ch_json["name"] = self.recipe_name[0] + " (Chinese Style)" 
+        # chinese version of recipe json
+        ch_json = self.recipe_dic.copy()
+        ch_json["name"] = self.recipe_name[0] + " (Chinese Style)"
 
         for ingredient in self.ingredients:
             food_type = self.in_food_group(ingredient.name)
@@ -575,15 +589,15 @@ class Recipe(object):
 
         new_ing = []
         new_dir = []
-        for ing in ch_json["ingredients"]: 
-            # first remove restrictions 
+        for ing in ch_json["ingredients"]:
+            # first remove restrictions
             ing_category = self.in_food_group(ing)
             if ing_category:
                 if ing_category in ["carb", "spice", "sauce"] and ing not in universal_ingredients:
                     replaced_ing = ing
                     ing = random.choice(chinese_cuisine[ing_category])
                     chinese_cuisine[ing_category].remove(ing)
-                    if ing_category in ["spice", "sauce"]: 
+                    if ing_category in ["spice", "sauce"]:
                         ing += " (to taste)"
 
                     rep = Ingredient(replaced_ing)
@@ -596,13 +610,10 @@ class Recipe(object):
                 new_ing.append(ing)
         ch_json["ingredients"] = new_ing
         ch_json["nutrition"].append("* Disclaimer: nutrition facts may differ post recipe transformation *")
-        
+
         print(ch_json)
         trans_recipe = Recipe(ch_json)
         return trans_recipe
-        
+
     def get_ingredients_tools_time(self):
         pass
-
-
->>>>>>> ff6ce51f5e8bcedd6dba4380d4d1bf9ba195be97
