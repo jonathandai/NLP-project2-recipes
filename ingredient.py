@@ -63,7 +63,6 @@ class Ingredient(object):
             name = name_split_comma[0]
             prep = name_split_comma[1]
 
-
         self.name = name
         self.quantity = quantity
         self.unit = unit

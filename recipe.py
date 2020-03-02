@@ -356,6 +356,7 @@ class Recipe(object):
         self.tools = recipe_dic['tools']
         # set methods
         self.methods = recipe_dic['methods']
+        self.url = recipe_dic["top_url"]
 
         fruits = set([line.strip() for line in open('./ingredient_data/fruits.txt')])
         spices = set([line.strip() for line in open('./ingredient_data/spices.txt')])
@@ -373,6 +374,8 @@ class Recipe(object):
             "binder": binders,
         }
 
+    def print_recipe(self):
+        print(self.recipe_name)
         
     def to_healthy(self):
         # returns a copy of healthy version of recipe
@@ -416,7 +419,7 @@ class Recipe(object):
         veg_ingredients = copy.deepcopy(self.ingredients)
         for ingredient in veg_ingredients:
             ingredient = ingredient.to_veg(meats_to_subtitute)
-        print(veg_ingredients)
+        # print(veg_ingredients, '-----------------------------------')
         # make direction veg
         veg_directions = []
         for i in range(len(self.directions)):
@@ -438,7 +441,7 @@ class Recipe(object):
         # veg_recipe.recipe_name = "Vegetarian "+ veg_recipe.recipe_name
         veg_recipe.ingredients = veg_ingredients
         veg_recipe.directions = veg_directions
-        print(veg_recipe.directions)
+        # print(veg_recipe.directions)
 
         return veg_recipe
     
@@ -631,7 +634,6 @@ class Recipe(object):
         ch_json["ingredients"] = new_ing
         ch_json["nutrition"].append("* Disclaimer: nutrition facts may differ post recipe transformation *")
         
-        print(ch_json)
+        # print(ch_json)
         trans_recipe = Recipe(ch_json)
         return trans_recipe
-        
