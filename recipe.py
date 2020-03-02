@@ -80,7 +80,20 @@ class Recipe(object):
         return output
 
     def to_cuisine(self, cuisine):
+        # chinese_subsitutions = {"carb": ["rice", "egg noodle"], "protein": [], "sauce": ["soy sauce"], "restrictions":[]}
+
+        # figure out best guess for cuisine 
+        # if not same
+            # transform to XX cuisine 
+            
+
+
         for i in self.ingredients:
-            print("name:", i.name, "// unit:",i.unit, "// quantity:",i.quantity, "// prep:", i.prep)
-        
+            print("name:", i.name, "// unit:", i.unit, "// quantity:", i.quantity, "// prep:", i.prep)
+
+        components = {}
+        # identify main components of dish (carb, protein, seasoning, dairy)
+        components["carb"] = ""
+
+
         return cuisine 
