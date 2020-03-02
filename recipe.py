@@ -6,7 +6,6 @@ import json
 import random
 import string
 from more_itertools import locate
- 
 # List of strings
 from RecipeFetcher import *
 
@@ -35,12 +34,12 @@ COOKING_METHOD_TO_SUBSTITUTE = { #TODO: add shellfish
         'trout': 'lentils',
         'crayfish': 'lentils',
         'lobster': 'lentils',
-        'shrimp': 'lentils', 
-        'prawns': 'lentils', 
-        'oyster': 'lentils', 
+        'shrimp': 'lentils',
+        'prawns': 'lentils',
+        'oyster': 'lentils',
         'mussel': 'lentils' ,
         'clams': 'lentils'
-    }, 
+    },
     'bake':{
         'chicken': 'seitan',
         'turkey': 'mushroom',
@@ -62,9 +61,9 @@ COOKING_METHOD_TO_SUBSTITUTE = { #TODO: add shellfish
         'trout': 'lentils',
         'crayfish': 'lentils',
         'lobster': 'lentils',
-        'shrimp': 'lentils', 
-        'prawns': 'lentils', 
-        'oyster': 'lentils', 
+        'shrimp': 'lentils',
+        'prawns': 'lentils',
+        'oyster': 'lentils',
         'mussel': 'lentils' ,
         'clams': 'lentils'
     },
@@ -89,9 +88,9 @@ COOKING_METHOD_TO_SUBSTITUTE = { #TODO: add shellfish
         'trout': 'lentils',
         'crayfish': 'lentils',
         'lobster': 'lentils',
-        'shrimp': 'lentils', 
-        'prawns': 'lentils', 
-        'oyster': 'lentils', 
+        'shrimp': 'lentils',
+        'prawns': 'lentils',
+        'oyster': 'lentils',
         'mussel': 'lentils' ,
         'clams': 'lentils'
     },
@@ -104,7 +103,7 @@ COOKING_METHOD_TO_SUBSTITUTE = { #TODO: add shellfish
         'fish': 'tofu',
         'ground': 'beans',
         'ham': 'tempeh',
-        'liver': 'tofu',        
+        'liver': 'tofu',
         'bacon': 'vegetarian bacon',
         'sausage': 'tofu',
         'veal': 'seitan',
@@ -116,9 +115,9 @@ COOKING_METHOD_TO_SUBSTITUTE = { #TODO: add shellfish
         'trout': 'lentils',
         'crayfish': 'lentils',
         'lobster': 'lentils',
-        'shrimp': 'lentils', 
-        'prawns': 'lentils', 
-        'oyster': 'lentils', 
+        'shrimp': 'lentils',
+        'prawns': 'lentils',
+        'oyster': 'lentils',
         'mussel': 'lentils' ,
         'clams': 'lentils'
     },
@@ -143,9 +142,9 @@ COOKING_METHOD_TO_SUBSTITUTE = { #TODO: add shellfish
         'trout': 'lentils',
         'crayfish': 'lentils',
         'lobster': 'lentils',
-        'shrimp': 'lentils', 
-        'prawns': 'lentils', 
-        'oyster': 'lentils', 
+        'shrimp': 'lentils',
+        'prawns': 'lentils',
+        'oyster': 'lentils',
         'mussel': 'lentils' ,
         'clams': 'lentils'
     },
@@ -170,9 +169,9 @@ COOKING_METHOD_TO_SUBSTITUTE = { #TODO: add shellfish
         'trout': 'lentils',
         'crayfish': 'lentils',
         'lobster': 'lentils',
-        'shrimp': 'lentils', 
-        'prawns': 'lentils', 
-        'oyster': 'lentils', 
+        'shrimp': 'lentils',
+        'prawns': 'lentils',
+        'oyster': 'lentils',
         'mussel': 'lentils' ,
         'clams': 'lentils'
     },
@@ -197,9 +196,9 @@ COOKING_METHOD_TO_SUBSTITUTE = { #TODO: add shellfish
         'trout': 'lentils',
         'crayfish': 'lentils',
         'lobster': 'lentils',
-        'shrimp': 'lentils', 
-        'prawns': 'lentils', 
-        'oyster': 'lentils', 
+        'shrimp': 'lentils',
+        'prawns': 'lentils',
+        'oyster': 'lentils',
         'mussel': 'lentils' ,
         'clams': 'lentils'
     },
@@ -224,9 +223,9 @@ COOKING_METHOD_TO_SUBSTITUTE = { #TODO: add shellfish
         'trout': 'lentils',
         'crayfish': 'lentils',
         'lobster': 'lentils',
-        'shrimp': 'lentils', 
-        'prawns': 'lentils', 
-        'oyster': 'lentils', 
+        'shrimp': 'lentils',
+        'prawns': 'lentils',
+        'oyster': 'lentils',
         'mussel': 'lentils' ,
         'clams': 'lentils'
     },
@@ -251,9 +250,9 @@ COOKING_METHOD_TO_SUBSTITUTE = { #TODO: add shellfish
         'trout': 'lentils',
         'crayfish': 'lentils',
         'lobster': 'lentils',
-        'shrimp': 'lentils', 
-        'prawns': 'lentils', 
-        'oyster': 'lentils', 
+        'shrimp': 'lentils',
+        'prawns': 'lentils',
+        'oyster': 'lentils',
         'mussel': 'lentils' ,
         'clams': 'lentils'
     },
@@ -278,9 +277,9 @@ COOKING_METHOD_TO_SUBSTITUTE = { #TODO: add shellfish
         'trout': 'lentils',
         'crayfish': 'lentils',
         'lobster': 'lentils',
-        'shrimp': 'lentils', 
-        'prawns': 'lentils', 
-        'oyster': 'lentils', 
+        'shrimp': 'lentils',
+        'prawns': 'lentils',
+        'oyster': 'lentils',
         'mussel': 'lentils' ,
         'clams': 'lentils'
     },
@@ -305,9 +304,9 @@ COOKING_METHOD_TO_SUBSTITUTE = { #TODO: add shellfish
         'trout': 'lentils',
         'crayfish': 'lentils',
         'lobster': 'lentils',
-        'shrimp': 'lentils', 
-        'prawns': 'lentils', 
-        'oyster': 'lentils', 
+        'shrimp': 'lentils',
+        'prawns': 'lentils',
+        'oyster': 'lentils',
         'mussel': 'lentils' ,
         'clams': 'lentils'
     },
@@ -332,9 +331,9 @@ COOKING_METHOD_TO_SUBSTITUTE = { #TODO: add shellfish
         'trout': 'lentils',
         'crayfish': 'lentils',
         'lobster': 'lentils',
-        'shrimp': 'lentils', 
-        'prawns': 'lentils', 
-        'oyster': 'lentils', 
+        'shrimp': 'lentils',
+        'prawns': 'lentils',
+        'oyster': 'lentils',
         'mussel': 'lentils' ,
         'clams': 'lentils'
     }
@@ -358,6 +357,7 @@ class Recipe(object):
         self.tools = recipe_dic['tools']
         # set methods
         self.methods = recipe_dic['methods']
+        self.url = recipe_dic["top_url"]
 
         fruits = set([line.strip() for line in open('./ingredient_data/fruits.txt')])
         spices = set([line.strip() for line in open('./ingredient_data/spices.txt')])
@@ -374,6 +374,25 @@ class Recipe(object):
             "carb": carbs,
             "binder": binders,
         }
+
+    def print_recipe(self):
+        print("Recipe Name:", self.recipe_name[0])
+        print("Recipe URL:", self.url, "\n")
+        print("Ingredients:")
+        for ing in self.ingredients:
+            print(ing)
+
+        print("\n")
+        print("Directions:")
+        i = 1
+        for dir in self.directions:
+            print("Step", i, ":" , dir)
+            i += 1 
+        print("\n")
+
+        print("Tools needed:", self.tools)
+        print("Methods required:", self.methods)
+        print("Primary cooking method:", "INSERT HERE")
 
         
     def to_healthy(self):
@@ -406,6 +425,34 @@ class Recipe(object):
 
         return healthy_recipe
 
+    def from_healthy(self):
+        #returns copy of unhealthy versio of recipe
+
+        unhealthy_ingredients = copy.deepcopy(self.ingredients)
+        for ingredient in unhealthy_ingredients:
+            ingredient = ingredient.from_healthy()
+
+        unhealthy_directions = copy.deepcopy(self.directions)
+
+        for i in range(len(unhealthy_directions)):
+            curr_direction = unhealthy_directions[i]
+            #print(curr_direction)
+            for healthy_ing in unhealthy_substitutes:
+                if healthy_ing in curr_direction:
+                    curr_direction = curr_direction.replace(healthy_ing, unhealthy_substitutes[healthy_ing])
+                    unhealthy_directions[i] = curr_direction
+                    #print(curr_direction)
+                # elif "bake" in curr_direction:
+                #     curr_direction = curr_direction.replace("bake", "fry")
+                #     unhealthy_directions[i] = curr_direction
+
+        unhealthy_recipe = copy.deepcopy(self)
+
+        # create new recipe object
+        unhealthy_recipe.ingredients = unhealthy_ingredients
+        unhealthy_recipe.directions = unhealthy_directions
+
+        return unhealthy_recipe
 
     def to_veg(self):
         # returns a copy of vegetarian version of recipe
@@ -418,6 +465,7 @@ class Recipe(object):
         veg_ingredients = copy.deepcopy(self.ingredients)
         for ingredient in veg_ingredients:
             ingredient = ingredient.to_veg(meats_to_subtitute)
+        # print(veg_ingredients, '-----------------------------------')
         # make direction veg
         veg_directions = []
         for i in range(len(self.directions)):
@@ -439,9 +487,10 @@ class Recipe(object):
         # veg_recipe.recipe_name = "Vegetarian "+ veg_recipe.recipe_name
         veg_recipe.ingredients = veg_ingredients
         veg_recipe.directions = veg_directions
+        # print(veg_recipe.directions)
 
         return veg_recipe
-    
+
     def meat_to_substitute(self, meat_to_cooking_method):
         global COOKING_METHOD_TO_SUBSTITUTE
         output = {}
@@ -451,8 +500,8 @@ class Recipe(object):
             else:
                 output[meat] = COOKING_METHOD_TO_SUBSTITUTE[method]['ground']
         return output
- 
-        
+
+
     def map_meat_to_cooking_method(self, directions, methods):
         '''
         returns dictionary of mapping and meat cooking method
@@ -486,8 +535,8 @@ class Recipe(object):
                         exclude_list.append(meat_tokens[1])
     
         return output
-    
-        
+
+
     def get_ingredients_tools_methods_times(self):
         # Steps – parse the directions into a series of steps that each consist of ingredients, tools, methods, and times
         output = []
@@ -506,14 +555,14 @@ class Recipe(object):
         for ingredient in ingredients:
             # tokenize ingredient, remove stop words
             ingredient_set = ingredient.name.split(' ')
-            ingredient_set = [w for w in ingredient_set if not w in STOP_WORDS] 
+            ingredient_set = [w for w in ingredient_set if not w in STOP_WORDS]
             # get primary words for ingredient name
             ingredient_pos = nltk.pos_tag(ingredient_set)
             ingredient_primary = [w[0] for w in ingredient_pos if w[1] in {'NN', 'NNS'}]
 
             # tokenize direction, remove stop words
             direction_set = direction.split(' ')
-            direction_set = [w for w in direction_set if not w in STOP_WORDS] 
+            direction_set = [w for w in direction_set if not w in STOP_WORDS]
             intersection = set(ingredient_primary).intersection(set(direction_set))
             if len(intersection) > 1:
                 ingredients_in_direction.append(ingredient.name)
@@ -528,14 +577,14 @@ class Recipe(object):
                 # get word to tools matchings
                 do = 'something'
         return tools_in_direction
-            
+
     def get_methods(self, methods, direction):
         methods_in_direction = []
         for method in methods:
             if method in direction:
                 methods_in_direction.append(method)
         return methods_in_direction
-    
+
     def get_times(self, direction):
         times = []
         global TIME_WORDS
@@ -558,11 +607,11 @@ class Recipe(object):
 
         return times
 
-        
+
 
 
     def in_food_group(self, ingredient):
-        
+
         '''
         Checks if a string (ingredient) is in one of the ingredient text files
         '''
@@ -570,7 +619,7 @@ class Recipe(object):
             if any(word in ingredient for word in self.food_groups[fg]):
                 return fg
         return False
-        
+
     def to_asian_cuisine(self, cuisine):
         chinese_cuisine = {
             "spice": ["garlic", "ginger", "clove", "star anise", "peppercorn", "cumin", "sesame seed", "five spice", "sichuan", "white pepper", "bay leaf"],
@@ -602,17 +651,17 @@ class Recipe(object):
 
         cuisine_map = {
             "chinese": chinese_cuisine,
-            "thai": thai_cuisine, 
+            "thai": thai_cuisine,
             "korean": korean_cuisine
         }
 
-        if cuisine in cuisine_map.keys(): 
+        if cuisine in cuisine_map.keys():
             sub = cuisine_map[cuisine]
         else:
             print('Sorry, this cuisine transformation is not supported.')
-            return 
+            return
 
-        universal_ingredients = ['salt', 'pepper', 'black pepper'] 
+        universal_ingredients = ['salt', 'pepper', 'black pepper']
 
         # for i in self.ingredients:
         #     print("name:", i.name, "// unit:", i.unit, "// quantity:", i.quantity, "// prep:", i.prep)
@@ -628,7 +677,7 @@ class Recipe(object):
 
         # chinese version of recipe json 
         ch_json = self.recipe_dic.copy() 
-        ch_json["name"] = self.recipe_name[0] + " (" + cuisine.capitalize() + " Style)" 
+        ch_json["name"] = [self.recipe_name[0] + " (" + cuisine.capitalize() + " Style)"]
 
         for ingredient in self.ingredients:
             food_type = self.in_food_group(ingredient.name)
@@ -638,15 +687,15 @@ class Recipe(object):
 
         new_ing = []
         new_dir = []
-        for ing in ch_json["ingredients"]: 
-            # first remove restrictions 
+        for ing in ch_json["ingredients"]:
+            # first remove restrictions
             ing_category = self.in_food_group(ing)
             if ing_category:
                 if ing_category in ["carb", "spice", "sauce"] and ing not in universal_ingredients:
                     replaced_ing = ing
                     ing = random.choice(sub[ing_category])
                     sub[ing_category].remove(ing)
-                    if ing_category in ["spice", "sauce"]: 
+                    if ing_category in ["spice", "sauce"]:
                         ing += " (to taste)"
 
                     rep = Ingredient(replaced_ing)
@@ -660,7 +709,6 @@ class Recipe(object):
         ch_json["ingredients"] = new_ing
         ch_json["nutrition"].append("* Disclaimer: nutrition facts may differ post recipe transformation *")
         
-        print(ch_json)
+        # print(ch_json)
         trans_recipe = Recipe(ch_json)
         return trans_recipe
-        
