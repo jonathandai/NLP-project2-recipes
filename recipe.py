@@ -341,10 +341,6 @@ TIME_WORDS = ['minute', 'minutes', 'min', 'mins', 'second', 'seconds', 's', 'hou
 class Recipe(object):
 
     def __init__(self, recipe_dic):
-        print(recipe_dic['name'])
-class Recipe(object):
-
-    def __init__(self, recipe_dic):
         self.recipe_dic = recipe_dic
         self.recipe_name = recipe_dic["name"]
         # list of ingredients objects
@@ -423,32 +419,32 @@ class Recipe(object):
         veg_ingredients = copy.deepcopy(self.ingredients)
         for ingredient in veg_ingredients:
             ingredient = ingredient.to_veg(meats_to_subtitute)
-
+        print(veg_ingredients)
         # make direction veg
-        veg_directions = copy.deepcopy(self.directions)
-        for i in range(len(veg_directions)):
-            direction = veg_directions[i]
+        veg_directions = []
+        for i in range(len(self.directions)):
+            new_direction = self.directions[i]
             for meat, substitute in meats_to_subtitute.items():
-                if meat in direction:
-                    veg_directions[i] = direction.replace(meat, substitute)
-                    # print(direction)
-                if 'meat' in direction:
-                    if 'ground meat' in direction:
-                        veg_directions[i] = direction.replace('ground_meat', substitute)
+                if meat in new_direction:
+                    new_direction = new_direction.replace(meat, substitute)
+                if 'meat' in new_direction:
+                    if 'ground meat' in new_direction:
+                        new_direction = new_direction.replace('ground meat', substitute)
                     else:
-                        veg_directions[i] = direction.replace('meat', substitute)
+                        new_direction = new_direction.replace('meat', substitute)
                 # else:
                 #     if 'ground' in meat:
                 #         veg_directions[i] = direction.replace(meat.split(' ')[1], substitute)
-
+            veg_directions.append(new_direction)
         # create new recipe object
         veg_recipe = copy.deepcopy(self)
         # veg_recipe.recipe_name = "Vegetarian "+ veg_recipe.recipe_name
         veg_recipe.ingredients = veg_ingredients
         veg_recipe.directions = veg_directions
+        print(veg_recipe.directions)
 
         return veg_recipe
-
+    
     def meat_to_substitute(self, meat_to_cooking_method):
         global COOKING_METHOD_TO_SUBSTITUTE
         output = {}
