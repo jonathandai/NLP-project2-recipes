@@ -42,18 +42,26 @@ class Ingredient(object):
                     name = ' '.join(tokens[index+1:])
                 else:
                     name = ' '.join(tokens[index:])
+        
+        prep = ""
+        if ", " in name:
+            print(name, '-----')
+            name_split_comma = name.split(',', 1)
+            name = name_split_comma[0]
+            prep = name_split_comma[1]
+
         self.name = name
         self.quantity = quantity
         self.unit = unit
-
+        self.prep = prep 
+    def __repr__(self):
+        return "name: " + self.name + " // unit: "+ self.unit + " // quantity: " + self.quantity + " // prep: " + self.prep + "\n"
     # def to_healthy(self):
     #     # convert ingredient to healthy substitute
     #     pass
     
-    def to_veg(self):
-        # convert ingredient to veg substitutde
-        text = nltk.word_tokenize(ingredient)
-        tokens = nltk.pos_tag(text)
-
-    
-
+    def to_veg(self, meats_to_substitute):
+        for meat, substitute in meats_to_substitute.items():
+            if meat in self.name:
+                self.name = substitute
+                return

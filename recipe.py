@@ -1,7 +1,7 @@
 import copy
 import re 
-from Ingredient import *
-from directions import *
+from ingredient import *
+
 # from RecipeFetcher import *
 COOKING_METHOD_TO_SUBSTITUTE = { #TODO: add shellfish
     'boil':{
@@ -125,7 +125,7 @@ class Recipe(object):
         self.ingredients = ingredient_objects
         # directions object
         self.directions = recipe_dic['directions']
-        
+
     def to_healthy(self):
         # returns a copy of healthy version of recipe
 
@@ -153,14 +153,33 @@ class Recipe(object):
         # make ingredients veg
         veg_ingredients = copy.deepcopy(self.ingredients)
         for ingredient in veg_ingredients:
-            ingredient = ingredient.to_veg()
-        
+            ingredient = ingredient.to_veg(meats_to_subtitute)
+
+        # make direction veg
+        veg_directions = copy.deepcopy(self.directions)
+        for i in range(len(veg_directions)):
+            direction = veg_directions[i]
+            for meat, substitute in meats_to_subtitute.items():
+                if meat in direction:
+                    veg_directions[i] = direction.replace(meat, substitute)
+                    # print(direction)
+                if 'meat' in direction:
+                    if 'ground meat' in direction:
+                        veg_directions[i] = direction.replace('ground_meat', substitute)
+                    else:
+                        veg_directions[i] = direction.replace('meat', substitute)
+                # else:
+                #     if 'ground' in meat:
+                #         veg_directions[i] = direction.replace(meat.split(' ')[1], substitute)
+
         # create new recipe object
-        # veg_recipe = Recipe(veg_ingredients, self.directions)
-        veg_recipe = None
+        veg_recipe = copy.deepcopy(self)
+        # veg_recipe.recipe_name = "Vegetarian "+ veg_recipe.recipe_name
+        veg_recipe.ingredients = veg_ingredients
+        veg_recipe.directions = veg_directions
 
         return veg_recipe
-    
+     
     def meat_to_substitute(self, meat_to_cooking_method):
         global COOKING_METHOD_TO_SUBSTITUTE
         output = {}
@@ -196,9 +215,13 @@ class Recipe(object):
                         cur_meat = found_meat[0]
                         meat_directions[found_meat[0]] = direction
                         # prevent duplicates with ground meats
-                        to_exclude = found_meat[0].split()[1]
-                        exclude_list.append(to_exclude)   
+                        # print(found_meat)
+                        # to_exclude = found_meat[0].split()[1]
+                        # exclude_list.append(to_exclude)   
         return output
 
-    def to_cuisine(self, cuisine): 
+    def to_cuisine(self, cuisine):
+        for i in self.ingredients:
+            print("name:", i.name, "// unit:",i.unit, "// quantity:",i.quantity, "// prep:", i.prep)
+        
         return cuisine 
