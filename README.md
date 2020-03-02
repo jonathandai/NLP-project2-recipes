@@ -25,7 +25,7 @@ Ingredients
  - Methods: 
   - Primary cooking method (e.g. sauté, broil, boil, poach, etc.)
   - (optional) Other cooking methods used (e.g. chop, grate, stir, shake, mince, crush, squeeze, etc.)
- Steps – parse the directions into a series of steps that each consist of ingredients, tools, methods, and times
+ - Steps – parse the directions into a series of steps that each consist of ingredients, tools, methods, and times
  3. Ask the user what kind of transformation they want to do.
  - To and from vegetarian (REQUIRED)
  - To and from healthy (REQUIRED)
