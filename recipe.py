@@ -488,44 +488,6 @@ class Recipe(object):
                         to_exclude = found_meat[0].split()[1]
                         exclude_list.append(to_exclude)   
         return output
-
-
-   
-    def in_food_group(self, ingredient):
-        
-        '''
-        Checks if a string (ingredient) is in one of the ingredient text files
-        '''
-        meat_list = [r'ground (chicken|turkey|beef|lamb|pork)', 'chicken', 'turkey', 'beef', 'lamb', 'pork', 'fish'] #TODO: potentially add types of shellfish
-        output = {}
-
-        meat_directions = {}
-        exclude_list = []
-        cur_meat = None
-        # get directions with meats only
-        for direction in directions:
-            for meat in meat_list:
-                if meat in exclude_list:
-                    continue
-                if cur_meat != None:
-                    for method in methods:
-                        if method in direction:
-                            output[cur_meat] = method
-                else:
-                    found_meat = re.search(meat, direction)
-                    if found_meat:
-                        cur_meat = found_meat[0]
-                        meat_directions[found_meat[0]] = direction
-                        # prevent duplicates with ground meats
-                        # print(found_meat)
-                        # to_exclude = found_meat[0].split()[1]
-                        # exclude_list.append(to_exclude)
-        return output
-        for fg in self.food_groups:
-            if any(word in ingredient for word in self.food_groups[fg]):
-                return fg
-        return False
-        
     
         
     def get_ingredients_tools_time(self):
