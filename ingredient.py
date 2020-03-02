@@ -91,8 +91,8 @@ class Ingredient(object):
         self.descriptor = descriptors
 
     def __repr__(self):
-        return "name: " + self.name + " // unit: "+ self.unit + " // quantity: " + self.quantity + " // prep: " + self.prep + "\n"
-
+        return "name: " + self.name + " // unit: "+ self.unit + " // quantity: " + self.quantity + " // prep: " + self.prep
+        
     def to_healthy(self):
         # convert ingredient to healthy substitute
         for key in healthy_substitutes:

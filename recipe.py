@@ -6,7 +6,6 @@ import json
 import random
 import string
 from more_itertools import locate
-
 # List of strings
 from RecipeFetcher import *
 
@@ -203,7 +202,7 @@ COOKING_METHOD_TO_SUBSTITUTE = { #TODO: add shellfish
         'mussel': 'lentils' ,
         'clams': 'lentils'
     },
-    'stiry fry':{
+    'stir fry':{
         'chicken': 'tofu',
         'turkey': 'tofu',
         'beef': 'mushroom',
@@ -358,6 +357,7 @@ class Recipe(object):
         self.tools = recipe_dic['tools']
         # set methods
         self.methods = recipe_dic['methods']
+        self.url = recipe_dic["top_url"]
 
         fruits = set([line.strip() for line in open('./ingredient_data/fruits.txt')])
         spices = set([line.strip() for line in open('./ingredient_data/spices.txt')])
@@ -375,7 +375,26 @@ class Recipe(object):
             "binder": binders,
         }
 
+    def print_recipe(self):
+        print("Recipe Name:", self.recipe_name[0])
+        print("Recipe URL:", self.url, "\n")
+        print("Ingredients:")
+        for ing in self.ingredients:
+            print(ing)
 
+        print("\n")
+        print("Directions:")
+        i = 1
+        for dir in self.directions:
+            print("Step", i, ":" , dir)
+            i += 1 
+        print("\n")
+
+        print("Tools needed:", self.tools)
+        print("Methods required:", self.methods)
+        print("Primary cooking method:", "INSERT HERE")
+
+        
     def to_healthy(self):
         # returns a copy of healthy version of recipe
 
@@ -441,11 +460,12 @@ class Recipe(object):
         methods = ['boil', 'bake','simmer','roast','fry','deep fry','deep-fry','stiry fry','stir-fry','grill','steam','sautee']
         meats_to_cooking_method = self.map_meat_to_cooking_method(self.directions, methods)
         meats_to_subtitute = self.meat_to_substitute(meats_to_cooking_method)
-
+        print(meats_to_subtitute)
         # make ingredients veg
         veg_ingredients = copy.deepcopy(self.ingredients)
         for ingredient in veg_ingredients:
             ingredient = ingredient.to_veg(meats_to_subtitute)
+        # print(veg_ingredients, '-----------------------------------')
         # make direction veg
         veg_directions = []
         for i in range(len(self.directions)):
@@ -467,6 +487,7 @@ class Recipe(object):
         # veg_recipe.recipe_name = "Vegetarian "+ veg_recipe.recipe_name
         veg_recipe.ingredients = veg_ingredients
         veg_recipe.directions = veg_directions
+        # print(veg_recipe.directions)
 
         return veg_recipe
 
@@ -485,29 +506,34 @@ class Recipe(object):
         '''
         returns dictionary of mapping and meat cooking method
         '''
-        meat_list = [r'ground (chicken|turkey|beef|lamb|pork)', 'chicken', 'turkey', 'beef', 'lamb', 'pork', 'fish'] #TODO: potentially add types of shellfish
+        meat_list = ['ground chicken', 'ground beef', 'ground turkey', 'ground pork', 'ground lamb','ground fish', 'chicken', 'turkey', 'beef', 'lamb', 'pork', 'fish'] #TODO: potentially add types of shellfish
         output = {}
 
-        meat_directions = {}
         exclude_list = []
-        cur_meat = None
         # get directions with meats only
         for direction in directions:
             for meat in meat_list:
                 if meat in exclude_list:
                     continue
-                if cur_meat != None:
+                if meat in direction:
                     for method in methods:
                         if method in direction:
-                            output[cur_meat] = method
-                else:
-                    found_meat = re.search(meat, direction)
-                    if found_meat:
-                        cur_meat = found_meat[0]
-                        meat_directions[found_meat[0]] = direction
-                        # prevent duplicates with ground meats
-                        to_exclude = found_meat[0].split()[1]
-                        exclude_list.append(to_exclude)
+                            output[meat] = method
+                    if 'ground' in meat:
+                        meat_tokens = meat.split(' ')
+                        exclude_list.append(meat_tokens[1])
+        print('checking ignredients')
+        # jank case for if meat not found in directions
+        for ingredient in self.ingredients:
+            for meat in meat_list:
+                if meat in exclude_list:
+                    continue
+                if meat in ingredient.name:
+                    output[meat] = 'stir fry'
+                    if 'ground' in meat:
+                        meat_tokens = meat.split(' ')
+                        exclude_list.append(meat_tokens[1])
+    
         return output
 
 
@@ -649,9 +675,9 @@ class Recipe(object):
             "binder": [],
         }
 
-        # chinese version of recipe json
-        ch_json = self.recipe_dic.copy()
-        ch_json["name"] = self.recipe_name[0] + " (" + cuisine.capitalize() + " Style)"
+        # chinese version of recipe json 
+        ch_json = self.recipe_dic.copy() 
+        ch_json["name"] = [self.recipe_name[0] + " (" + cuisine.capitalize() + " Style)"]
 
         for ingredient in self.ingredients:
             food_type = self.in_food_group(ingredient.name)
@@ -682,7 +708,7 @@ class Recipe(object):
                 new_ing.append(ing)
         ch_json["ingredients"] = new_ing
         ch_json["nutrition"].append("* Disclaimer: nutrition facts may differ post recipe transformation *")
-
-        print(ch_json)
+        
+        # print(ch_json)
         trans_recipe = Recipe(ch_json)
         return trans_recipe

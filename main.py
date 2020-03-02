@@ -2,52 +2,41 @@ from RecipeFetcher import *
 from recipe import *
 from nltk.corpus import wordnet as wn
 
-# initializze recipe fetcher object, can be used to scrap any food
-rf = RecipeFetcher()
+def main(): 
+    # initialize recipe fetcher object, can be used to scrap any food
+    rf = RecipeFetcher()
 
-# grabs meat lasagna recipe 
-# recipe_json = rf.find_recipe("meat")
+    # prompt user for what recipe they want to find 
+    food_name = input("Please enter what recipe you want to search for:\n")
 
-# RF = RecipeFetcher()
-# recipe = RF.find_recipe('chicken alfredo')
-<<<<<<< HEAD
-recipe_json = rf.find_recipe('meat')
-=======
-recipe_json = rf.find_recipe('meat lasagna')
->>>>>>> 7a098d9b509c546f0be4743a7f963dbfebe31183
-recipe = Recipe(recipe_json)
-print(recipe_json)
-# print(recipe.ingredients)
-# print(recipe.directions)
-# veg_recipe = recipe.to_veg()
-# print(veg_recipe.directions)
-# print(recipe_json)
+    # fetch the allrecipes page
+    try: 
+        recipe_json = rf.find_recipe(food_name)
+        recipe = Recipe(recipe_json)
 
-# Parse ingredients for name, quantity, measurement type, descriptor (optional), and preparation (optional)
+        # print initial recipe
+        print("Here is the top result for your search: \n")
+        recipe.print_recipe()
 
-# Use NLTK library to get a list of ingrdients 
-# food = wn.synset('ingredient.n.03')
-# print(wn.synset('ingredient.n.03').definition())
-# Hyponyms are more specific cases of a concept/word
-# print(len(list(set([w for s in food.closure(lambda s:s.hyponyms()) for w in s.lemma_names()]))))
+        # ask user what transformation they want to perform
+        transformation = input("Please enter the transformation you want (vegetarian, healty, asian). If none, enter any character:\n")
+        if transformation == "vegetarian":
+            veg = recipe.to_veg()
+            veg.print_recipe()
+        elif transformation == "healthy":
+            healthy = recipe.to_healthy()
+            healthy.print_recipe()
+        elif transformation == "asian": 
+            cuisine = input("Please input which asian region you want to transform your recipe to (current supported options include: chinese, korean, and thai):\n")
+            while cuisine not in ["chinese", "korean", "thai"]:
+                cuisine = input("Please input a supported option (chinese, korean, and thai):\n")
+            asian = recipe.to_asian_cuisine(cuisine)
+            asian.print_recipe()
+        else: 
+            print("Happy cooking.")
+    except: 
+        print("Invalid input, please try again.")
+        main() 
 
-# Parsing ingredients using regex 
-# ingredients = {}
-# for ingredient in recipe_json["ingredients"]: 
-#     ingredient["name"], ingredient["quantity"], ingredient["unit"] = parse_ingredient(ingredient)
-
-# def parse_ingredient(ingredient): 
-#     name = ""
-#     quantity = -1
-#     unit = ""
-#     return name, quantity, unit
-
-# Test to cuisine 
-test_recipe = Recipe(recipe_json)
-test_recipe.to_chinese()
-
-# map to relevant classes 
-
-
-
-
+if __name__ == "__main__":
+    main() 
