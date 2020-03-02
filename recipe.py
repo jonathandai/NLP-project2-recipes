@@ -203,7 +203,7 @@ COOKING_METHOD_TO_SUBSTITUTE = { #TODO: add shellfish
         'mussel': 'lentils' ,
         'clams': 'lentils'
     },
-    'stiry fry':{
+    'stir fry':{
         'chicken': 'tofu',
         'turkey': 'tofu',
         'beef': 'mushroom',
@@ -413,7 +413,7 @@ class Recipe(object):
         methods = ['boil', 'bake','simmer','roast','fry','deep fry','deep-fry','stiry fry','stir-fry','grill','steam','sautee']
         meats_to_cooking_method = self.map_meat_to_cooking_method(self.directions, methods)
         meats_to_subtitute = self.meat_to_substitute(meats_to_cooking_method)
-
+        print(meats_to_subtitute)
         # make ingredients veg
         veg_ingredients = copy.deepcopy(self.ingredients)
         for ingredient in veg_ingredients:
@@ -457,29 +457,34 @@ class Recipe(object):
         '''
         returns dictionary of mapping and meat cooking method
         '''
-        meat_list = [r'ground (chicken|turkey|beef|lamb|pork)', 'chicken', 'turkey', 'beef', 'lamb', 'pork', 'fish'] #TODO: potentially add types of shellfish
+        meat_list = ['ground chicken', 'ground beef', 'ground turkey', 'ground pork', 'ground lamb','ground fish', 'chicken', 'turkey', 'beef', 'lamb', 'pork', 'fish'] #TODO: potentially add types of shellfish
         output = {}
 
-        meat_directions = {}
         exclude_list = []
-        cur_meat = None
         # get directions with meats only
         for direction in directions:
             for meat in meat_list:
                 if meat in exclude_list:
                     continue
-                if cur_meat != None:
+                if meat in direction:
                     for method in methods:
                         if method in direction:
-                            output[cur_meat] = method
-                else:
-                    found_meat = re.search(meat, direction)
-                    if found_meat:
-                        cur_meat = found_meat[0]
-                        meat_directions[found_meat[0]] = direction
-                        # prevent duplicates with ground meats
-                        to_exclude = found_meat[0].split()[1]
-                        exclude_list.append(to_exclude)   
+                            output[meat] = method
+                    if 'ground' in meat:
+                        meat_tokens = meat.split(' ')
+                        exclude_list.append(meat_tokens[1])
+        print('checking ignredients')
+        # jank case for if meat not found in directions
+        for ingredient in self.ingredients:
+            for meat in meat_list:
+                if meat in exclude_list:
+                    continue
+                if meat in ingredient.name:
+                    output[meat] = 'stir fry'
+                    if 'ground' in meat:
+                        meat_tokens = meat.split(' ')
+                        exclude_list.append(meat_tokens[1])
+    
         return output
     
         
@@ -492,7 +497,7 @@ class Recipe(object):
             methods = self.get_methods(self.methods, direction)
             times = self.get_times(direction)
             output.append([ingredients, tools, methods, times])
-            
+
         return output
 
     def get_ingredients(self, ingredients, direction):
