@@ -4,16 +4,6 @@ from ingredient import *
 
 # from RecipeFetcher import *
 COOKING_METHOD_TO_SUBSTITUTE = { #TODO: add shellfish
-"""
-'liver': 'tofu',
-
-    'quail': 'eggplant',
-    'rabbit': 'beans',
-    'pheasant': 'eggplant',
-    'goose': 'eggplant',
-
-
-"""
     'boil':{
         'chicken': 'tofu',
         'turkey': 'tofu',
@@ -32,7 +22,7 @@ COOKING_METHOD_TO_SUBSTITUTE = { #TODO: add shellfish
         'catfish': 'lentils',
         'salmon': 'lentils',
         'tilapia': 'lentils',
-        'tuna': 'lentils'
+        'tuna': 'lentils',
         'trout': 'lentils',
         'crayfish': 'lentils',
         'lobster': 'lentils',
@@ -59,7 +49,7 @@ COOKING_METHOD_TO_SUBSTITUTE = { #TODO: add shellfish
         'catfish': 'lentils',
         'salmon': 'lentils',
         'tilapia': 'lentils',
-        'tuna': 'lentils'
+        'tuna': 'lentils',
         'trout': 'lentils',
         'crayfish': 'lentils',
         'lobster': 'lentils',
@@ -86,7 +76,7 @@ COOKING_METHOD_TO_SUBSTITUTE = { #TODO: add shellfish
         'catfish': 'lentils',
         'salmon': 'lentils',
         'tilapia': 'lentils',
-        'tuna': 'lentils'
+        'tuna': 'lentils',
         'trout': 'lentils',
         'crayfish': 'lentils',
         'lobster': 'lentils',
@@ -113,7 +103,7 @@ COOKING_METHOD_TO_SUBSTITUTE = { #TODO: add shellfish
         'catfish': 'lentils',
         'salmon': 'lentils',
         'tilapia': 'lentils',
-        'tuna': 'lentils'
+        'tuna': 'lentils',
         'trout': 'lentils',
         'crayfish': 'lentils',
         'lobster': 'lentils',
@@ -140,7 +130,7 @@ COOKING_METHOD_TO_SUBSTITUTE = { #TODO: add shellfish
         'catfish': 'lentils',
         'salmon': 'lentils',
         'tilapia': 'lentils',
-        'tuna': 'lentils'
+        'tuna': 'lentils',
         'trout': 'lentils',
         'crayfish': 'lentils',
         'lobster': 'lentils',
@@ -167,7 +157,7 @@ COOKING_METHOD_TO_SUBSTITUTE = { #TODO: add shellfish
         'catfish': 'lentils',
         'salmon': 'lentils',
         'tilapia': 'lentils',
-        'tuna': 'lentils'
+        'tuna': 'lentils',
         'trout': 'lentils',
         'crayfish': 'lentils',
         'lobster': 'lentils',
@@ -194,7 +184,7 @@ COOKING_METHOD_TO_SUBSTITUTE = { #TODO: add shellfish
         'catfish': 'lentils',
         'salmon': 'lentils',
         'tilapia': 'lentils',
-        'tuna': 'lentils'
+        'tuna': 'lentils',
         'trout': 'lentils',
         'crayfish': 'lentils',
         'lobster': 'lentils',
@@ -221,7 +211,7 @@ COOKING_METHOD_TO_SUBSTITUTE = { #TODO: add shellfish
         'catfish': 'lentils',
         'salmon': 'lentils',
         'tilapia': 'lentils',
-        'tuna': 'lentils'
+        'tuna': 'lentils',
         'trout': 'lentils',
         'crayfish': 'lentils',
         'lobster': 'lentils',
@@ -248,7 +238,7 @@ COOKING_METHOD_TO_SUBSTITUTE = { #TODO: add shellfish
         'catfish': 'lentils',
         'salmon': 'lentils',
         'tilapia': 'lentils',
-        'tuna': 'lentils'
+        'tuna': 'lentils',
         'trout': 'lentils',
         'crayfish': 'lentils',
         'lobster': 'lentils',
@@ -275,7 +265,7 @@ COOKING_METHOD_TO_SUBSTITUTE = { #TODO: add shellfish
         'catfish': 'lentils',
         'salmon': 'lentils',
         'tilapia': 'lentils',
-        'tuna': 'lentils'
+        'tuna': 'lentils',
         'trout': 'lentils',
         'crayfish': 'lentils',
         'lobster': 'lentils',
@@ -302,7 +292,7 @@ COOKING_METHOD_TO_SUBSTITUTE = { #TODO: add shellfish
         'catfish': 'lentils',
         'salmon': 'lentils',
         'tilapia': 'lentils',
-        'tuna': 'lentils'
+        'tuna': 'lentils',
         'trout': 'lentils',
         'crayfish': 'lentils',
         'lobster': 'lentils',
@@ -329,7 +319,7 @@ COOKING_METHOD_TO_SUBSTITUTE = { #TODO: add shellfish
         'catfish': 'lentils',
         'salmon': 'lentils',
         'tilapia': 'lentils',
-        'tuna': 'lentils'
+        'tuna': 'lentils',
         'trout': 'lentils',
         'crayfish': 'lentils',
         'lobster': 'lentils',
@@ -352,6 +342,7 @@ class Recipe(object):
         self.ingredients = ingredient_objects
         # directions object
         self.directions = recipe_dic['directions']
+        # set tools
 
     def to_healthy(self):
         # returns a copy of healthy version of recipe
@@ -452,3 +443,7 @@ class Recipe(object):
             print("name:", i.name, "// unit:",i.unit, "// quantity:",i.quantity, "// prep:", i.prep)
         
         return cuisine 
+    def get_ingredients_tools_time(self):
+        pass
+
+
