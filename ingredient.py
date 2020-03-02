@@ -69,17 +69,17 @@ class Ingredient(object):
         self.unit = unit
         self.prep = prep
 
-
+    def __repr__(self):
+        return "name: " + self.name + " // unit: "+ self.unit + " // quantity: " + self.quantity + " // prep: " + self.prep + "\n"
+        
     def to_healthy(self):
         # convert ingredient to healthy substitute
         for key in healthy_substitutes:
             if key in self.name:
                 self.name = healthy_substitutes[key]
 
-
-
-
-
-    # def to_veg(self):
-    #     # convert ingredient to veg substitutde
-    #     pass
+    def to_veg(self, meats_to_substitute):
+        for meat, substitute in meats_to_substitute.items():
+            if meat in self.name:
+                self.name = substitute
+                return

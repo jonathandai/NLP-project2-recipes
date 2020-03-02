@@ -1,351 +1,344 @@
 import copy
 import re
 from ingredient import *
-<<<<<<< HEAD
-
+from nltk.corpus import stopwords
+import json
+import random 
 from RecipeFetcher import *
-# COOKING_METHOD_TO_SUBSTITUTE = { #TODO: add shellfish
-# """
-# 'liver': 'tofu',
-#
-#     'quail': 'eggplant',
-#     'rabbit': 'beans',
-#     'pheasant': 'eggplant',
-#     'goose': 'eggplant',
-#
-#
-# """
-#     'boil':{
-#         'chicken': 'tofu',
-#         'turkey': 'tofu',
-#         'beef': 'mushroom',
-#         'lamb': 'mushroom',
-#         'pork': 'mushroom',
-#         'fish': 'tofu',
-#         'ground': 'beans',
-#         'ham': 'tempeh',
-#         'liver': 'tofu',
-#         'ribs': 'tempeh',
-#         'bacon': 'vegetarian bacon',
-#         'sausage': 'tofu',
-#         'veal': 'seitan',
-#         'carp': 'lentils',
-#         'catfish': 'lentils',
-#         'salmon': 'lentils',
-#         'tilapia': 'lentils',
-#         'tuna': 'lentils',
-#         'trout': 'lentils',
-#         'crayfish': 'lentils',
-#         'lobster': 'lentils',
-#         'shrimp': 'lentils',
-#         'prawns': 'lentils',
-#         'oyster': 'lentils',
-#         'mussel': 'lentils',
-#         'clams': 'lentils'
-#     },
-#     'bake':{
-#         'chicken': 'seitan',
-#         'turkey': 'mushroom',
-#         'beef': 'mushroom',
-#         'lamb': 'mushroom',
-#         'pork': 'mushroom',
-#         'fish': 'tempeh',
-#         'ground': 'beans',
-#         'ham': 'tempeh',
-#         'liver': 'tofu',
-#         'bacon': 'vegetarian bacon',
-#         'sausage': 'tofu',
-#         'veal': 'seitan',
-#         'carp': 'lentils',
-#         'catfish': 'lentils',
-#         'salmon': 'lentils',
-#         'tilapia': 'lentils',
-#         'tuna': 'lentils'
-#         'trout': 'lentils',
-#         'crayfish': 'lentils',
-#         'lobster': 'lentils',
-#         'shrimp': 'lentils',
-#         'prawns': 'lentils',
-#         'oyster': 'lentils',
-#         'mussel': 'lentils',
-#         'clams': 'lentils'
-#     },
-#     'simmer':{
-#         'chicken': 'tofu',
-#         'turkey': 'tofu',
-#         'beef': 'mushroom',
-#         'lamb': 'mushroom',
-#         'pork': 'jackfruit',
-#         'fish': 'tofu',
-#         'ground': 'beans',
-#         'ham': 'tempeh',
-#         'liver': 'tofu',
-#         'bacon': 'vegetarian bacon',
-#         'sausage': 'tofu',
-#         'veal': 'seitan',
-#         'carp': 'lentils',
-#         'catfish': 'lentils',
-#         'salmon': 'lentils',
-#         'tilapia': 'lentils',
-#         'tuna': 'lentils'
-#         'trout': 'lentils',
-#         'crayfish': 'lentils',
-#         'lobster': 'lentils',
-#         'shrimp': 'lentils',
-#         'prawns': 'lentils',
-#         'oyster': 'lentils',
-#         'mussel': 'lentils' ,
-#         'clams': 'lentils'
-#     },
-#     'roast':{
-#         'chicken': 'tofu',
-#         'turkey': 'tofu',
-#         'beef': 'mushroom',
-#         'lamb': 'mushroom',
-#         'pork': 'jackfruit',
-#         'fish': 'tofu',
-#         'ground': 'beans',
-#         'ham': 'tempeh',
-#         'liver': 'tofu',
-#         'bacon': 'vegetarian bacon',
-#         'sausage': 'tofu',
-#         'veal': 'seitan',
-#         'carp': 'lentils',
-#         'catfish': 'lentils',
-#         'salmon': 'lentils',
-#         'tilapia': 'lentils',
-#         'tuna': 'lentils'
-#         'trout': 'lentils',
-#         'crayfish': 'lentils',
-#         'lobster': 'lentils',
-#         'shrimp': 'lentils',
-#         'prawns': 'lentils',
-#         'oyster': 'lentils',
-#         'mussel': 'lentils' ,
-#         'clams': 'lentils'
-#     },
-#     'fry':{
-#         'chicken': 'tofu',
-#         'turkey': 'tofu',
-#         'beef': 'mushroom',
-#         'lamb': 'mushroom',
-#         'pork': 'jackfruit',
-#         'fish': 'tofu',
-#         'ground': 'beans',
-#         'ham': 'tempeh',
-#         'liver': 'tofu',
-#         'bacon': 'vegetarian bacon',
-#         'sausage': 'tofu',
-#         'veal': 'seitan',
-#         'carp': 'lentils',
-#         'catfish': 'lentils',
-#         'salmon': 'lentils',
-#         'tilapia': 'lentils',
-#         'tuna': 'lentils'
-#         'trout': 'lentils',
-#         'crayfish': 'lentils',
-#         'lobster': 'lentils',
-#         'shrimp': 'lentils',
-#         'prawns': 'lentils',
-#         'oyster': 'lentils',
-#         'mussel': 'lentils' ,
-#         'clams': 'lentils'
-#     },
-#     'deep fry':{
-#         'chicken': 'tofu',
-#         'turkey': 'tofu',
-#         'beef': 'mushroom',
-#         'lamb': 'mushroom',
-#         'pork': 'jackfruit',
-#         'fish': 'tofu',
-#         'ground': 'beans',
-#         'ham': 'tempeh',
-#         'liver': 'tofu',
-#         'bacon': 'vegetarian bacon',
-#         'sausage': 'tofu',
-#         'veal': 'seitan',
-#         'carp': 'lentils',
-#         'catfish': 'lentils',
-#         'salmon': 'lentils',
-#         'tilapia': 'lentils',
-#         'tuna': 'lentils'
-#         'trout': 'lentils',
-#         'crayfish': 'lentils',
-#         'lobster': 'lentils',
-#         'shrimp': 'lentils',
-#         'prawns': 'lentils',
-#         'oyster': 'lentils',
-#         'mussel': 'lentils' ,
-#         'clams': 'lentils'
-#     },
-#     'deep-fry':{
-#         'chicken': 'tofu',
-#         'turkey': 'tofu',
-#         'beef': 'mushroom',
-#         'lamb': 'mushroom',
-#         'pork': 'jackfruit',
-#         'fish': 'tofu',
-#         'ground': 'beans',
-#         'ham': 'tempeh',
-#         'liver': 'tofu',
-#         'bacon': 'vegetarian bacon',
-#         'sausage': 'tofu',
-#         'veal': 'seitan',
-#         'carp': 'lentils',
-#         'catfish': 'lentils',
-#         'salmon': 'lentils',
-#         'tilapia': 'lentils',
-#         'tuna': 'lentils'
-#         'trout': 'lentils',
-#         'crayfish': 'lentils',
-#         'lobster': 'lentils',
-#         'shrimp': 'lentils',
-#         'prawns': 'lentils',
-#         'oyster': 'lentils',
-#         'mussel': 'lentils' ,
-#         'clams': 'lentils'
-#     },
-#     'stiry fry':{
-#         'chicken': 'tofu',
-#         'turkey': 'tofu',
-#         'beef': 'mushroom',
-#         'lamb': 'mushroom',
-#         'pork': 'jackfruit',
-#         'fish': 'tofu',
-#         'ground': 'beans',
-#         'ham': 'tempeh',
-#         'liver': 'tofu',
-#         'bacon': 'vegetarian bacon',
-#         'sausage': 'tofu',
-#         'veal': 'seitan',
-#         'carp': 'lentils',
-#         'catfish': 'lentils',
-#         'salmon': 'lentils',
-#         'tilapia': 'lentils',
-#         'tuna': 'lentils'
-#         'trout': 'lentils',
-#         'crayfish': 'lentils',
-#         'lobster': 'lentils',
-#         'shrimp': 'lentils',
-#         'prawns': 'lentils',
-#         'oyster': 'lentils',
-#         'mussel': 'lentils' ,
-#         'clams': 'lentils'
-#     },
-#     'stir-fry':{
-#         'chicken': 'tofu',
-#         'turkey': 'tofu',
-#         'beef': 'mushroom',
-#         'lamb': 'mushroom',
-#         'pork': 'jackfruit',
-#         'fish': 'tofu',
-#         'ground': 'beans',
-#         'ham': 'tempeh',
-#         'liver': 'tofu',
-#         'bacon': 'vegetarian bacon',
-#         'sausage': 'tofu',
-#         'veal': 'seitan',
-#         'carp': 'lentils',
-#         'catfish': 'lentils',
-#         'salmon': 'lentils',
-#         'tilapia': 'lentils',
-#         'tuna': 'lentils'
-#         'trout': 'lentils',
-#         'crayfish': 'lentils',
-#         'lobster': 'lentils',
-#         'shrimp': 'lentils',
-#         'prawns': 'lentils',
-#         'oyster': 'lentils',
-#         'mussel': 'lentils' ,
-#         'clams': 'lentils'
-#     },
-#     'grill':{
-#         'chicken': 'tofu',
-#         'turkey': 'tofu',
-#         'beef': 'mushroom',
-#         'lamb': 'mushroom',
-#         'pork': 'jackfruit',
-#         'fish': 'tofu',
-#         'ground': 'beans',
-#         'ham': 'tempeh',
-#         'liver': 'tofu',
-#         'bacon': 'vegetarian bacon',
-#         'sausage': 'tofu',
-#         'veal': 'seitan',
-#         'carp': 'lentils',
-#         'catfish': 'lentils',
-#         'salmon': 'lentils',
-#         'tilapia': 'lentils',
-#         'tuna': 'lentils'
-#         'trout': 'lentils',
-#         'crayfish': 'lentils',
-#         'lobster': 'lentils',
-#         'shrimp': 'lentils',
-#         'prawns': 'lentils',
-#         'oyster': 'lentils',
-#         'mussel': 'lentils' ,
-#         'clams': 'lentils'
-#     },
-#     'steam':{
-#         'chicken': 'tofu',
-#         'turkey': 'tofu',
-#         'beef': 'mushroom',
-#         'lamb': 'mushroom',
-#         'pork': 'jackfruit',
-#         'fish': 'tofu',
-#         'ground': 'beans',
-#         'ham': 'tofu',
-#         'liver': 'tofu',
-#         'bacon': 'vegetarian bacon',
-#         'sausage': 'tofu',
-#         'veal': 'seitan',
-#         'carp': 'lentils',
-#         'catfish': 'lentils',
-#         'salmon': 'lentils',
-#         'tilapia': 'lentils',
-#         'tuna': 'lentils'
-#         'trout': 'lentils',
-#         'crayfish': 'lentils',
-#         'lobster': 'lentils',
-#         'shrimp': 'lentils',
-#         'prawns': 'lentils',
-#         'oyster': 'lentils',
-#         'mussel': 'lentils' ,
-#         'clams': 'lentils'
-#     },
-#     'sautee':{
-#         'chicken': 'tofu',
-#         'turkey': 'tofu',
-#         'beef': 'mushroom',
-#         'lamb': 'mushroom',
-#         'pork': 'jackfruit',
-#         'fish': 'tofu',
-#         'ground': 'beans',
-#         'ham': 'tempeh',
-#         'liver': 'tofu',
-#         'bacon': 'vegetarian bacon',
-#         'sausage': 'tofu',
-#         'veal': 'seitan',
-#         'carp': 'lentils',
-#         'catfish': 'lentils',
-#         'salmon': 'lentils',
-#         'tilapia': 'lentils',
-#         'tuna': 'lentils'
-#         'trout': 'lentils',
-#         'crayfish': 'lentils',
-#         'lobster': 'lentils',
-#         'shrimp': 'lentils',
-#         'prawns': 'lentils',
-#         'oyster': 'lentils',
-#         'mussel': 'lentils' ,
-#         'clams': 'lentils'
-#     }
-# }
-=======
+
 import json
 import random 
 # from RecipeFetcher import *
->>>>>>> ff6ce51f5e8bcedd6dba4380d4d1bf9ba195be97
+STOP_WORDS =  set(stopwords.words('english'))
+COOKING_METHOD_TO_SUBSTITUTE = { #TODO: add shellfish
+    'boil':{
+        'chicken': 'tofu',
+        'turkey': 'tofu',
+        'beef': 'mushroom',
+        'lamb': 'mushroom',
+        'pork': 'mushroom',
+        'fish': 'tofu',
+        'ground': 'beans',
+        'ham': 'tempeh',
+        'liver': 'tofu',
+        'ribs': 'tempeh',
+        'bacon': 'vegetarian bacon',
+        'sausage': 'tofu',
+        'veal': 'seitan',
+        'carp': 'lentils',
+        'catfish': 'lentils',
+        'salmon': 'lentils',
+        'tilapia': 'lentils',
+        'tuna': 'lentils',
+        'trout': 'lentils',
+        'crayfish': 'lentils',
+        'lobster': 'lentils',
+        'shrimp': 'lentils', 
+        'prawns': 'lentils', 
+        'oyster': 'lentils', 
+        'mussel': 'lentils' ,
+        'clams': 'lentils'
+    }, 
+    'bake':{
+        'chicken': 'seitan',
+        'turkey': 'mushroom',
+        'beef': 'mushroom',
+        'lamb': 'mushroom',
+        'pork': 'mushroom',
+        'fish': 'tempeh',
+        'ground': 'beans',
+        'ham': 'tempeh',
+        'liver': 'tofu',
+        'bacon': 'vegetarian bacon',
+        'sausage': 'tofu',
+        'veal': 'seitan',
+        'carp': 'lentils',
+        'catfish': 'lentils',
+        'salmon': 'lentils',
+        'tilapia': 'lentils',
+        'tuna': 'lentils',
+        'trout': 'lentils',
+        'crayfish': 'lentils',
+        'lobster': 'lentils',
+        'shrimp': 'lentils', 
+        'prawns': 'lentils', 
+        'oyster': 'lentils', 
+        'mussel': 'lentils' ,
+        'clams': 'lentils'
+    },
+    'simmer':{
+        'chicken': 'tofu',
+        'turkey': 'tofu',
+        'beef': 'mushroom',
+        'lamb': 'mushroom',
+        'pork': 'jackfruit',
+        'fish': 'tofu',
+        'ground': 'beans',
+        'ham': 'tempeh',
+        'liver': 'tofu',
+        'bacon': 'vegetarian bacon',
+        'sausage': 'tofu',
+        'veal': 'seitan',
+        'carp': 'lentils',
+        'catfish': 'lentils',
+        'salmon': 'lentils',
+        'tilapia': 'lentils',
+        'tuna': 'lentils',
+        'trout': 'lentils',
+        'crayfish': 'lentils',
+        'lobster': 'lentils',
+        'shrimp': 'lentils', 
+        'prawns': 'lentils', 
+        'oyster': 'lentils', 
+        'mussel': 'lentils' ,
+        'clams': 'lentils'
+    },
+    'roast':{
+        'chicken': 'tofu',
+        'turkey': 'tofu',
+        'beef': 'mushroom',
+        'lamb': 'mushroom',
+        'pork': 'jackfruit',
+        'fish': 'tofu',
+        'ground': 'beans',
+        'ham': 'tempeh',
+        'liver': 'tofu',        
+        'bacon': 'vegetarian bacon',
+        'sausage': 'tofu',
+        'veal': 'seitan',
+        'carp': 'lentils',
+        'catfish': 'lentils',
+        'salmon': 'lentils',
+        'tilapia': 'lentils',
+        'tuna': 'lentils',
+        'trout': 'lentils',
+        'crayfish': 'lentils',
+        'lobster': 'lentils',
+        'shrimp': 'lentils', 
+        'prawns': 'lentils', 
+        'oyster': 'lentils', 
+        'mussel': 'lentils' ,
+        'clams': 'lentils'
+    },
+    'fry':{
+        'chicken': 'tofu',
+        'turkey': 'tofu',
+        'beef': 'mushroom',
+        'lamb': 'mushroom',
+        'pork': 'jackfruit',
+        'fish': 'tofu',
+        'ground': 'beans',
+        'ham': 'tempeh',
+        'liver': 'tofu',
+        'bacon': 'vegetarian bacon',
+        'sausage': 'tofu',
+        'veal': 'seitan',
+        'carp': 'lentils',
+        'catfish': 'lentils',
+        'salmon': 'lentils',
+        'tilapia': 'lentils',
+        'tuna': 'lentils',
+        'trout': 'lentils',
+        'crayfish': 'lentils',
+        'lobster': 'lentils',
+        'shrimp': 'lentils', 
+        'prawns': 'lentils', 
+        'oyster': 'lentils', 
+        'mussel': 'lentils' ,
+        'clams': 'lentils'
+    },
+    'deep fry':{
+        'chicken': 'tofu',
+        'turkey': 'tofu',
+        'beef': 'mushroom',
+        'lamb': 'mushroom',
+        'pork': 'jackfruit',
+        'fish': 'tofu',
+        'ground': 'beans',
+        'ham': 'tempeh',
+        'liver': 'tofu',
+        'bacon': 'vegetarian bacon',
+        'sausage': 'tofu',
+        'veal': 'seitan',
+        'carp': 'lentils',
+        'catfish': 'lentils',
+        'salmon': 'lentils',
+        'tilapia': 'lentils',
+        'tuna': 'lentils',
+        'trout': 'lentils',
+        'crayfish': 'lentils',
+        'lobster': 'lentils',
+        'shrimp': 'lentils', 
+        'prawns': 'lentils', 
+        'oyster': 'lentils', 
+        'mussel': 'lentils' ,
+        'clams': 'lentils'
+    },
+    'deep-fry':{
+        'chicken': 'tofu',
+        'turkey': 'tofu',
+        'beef': 'mushroom',
+        'lamb': 'mushroom',
+        'pork': 'jackfruit',
+        'fish': 'tofu',
+        'ground': 'beans',
+        'ham': 'tempeh',
+        'liver': 'tofu',
+        'bacon': 'vegetarian bacon',
+        'sausage': 'tofu',
+        'veal': 'seitan',
+        'carp': 'lentils',
+        'catfish': 'lentils',
+        'salmon': 'lentils',
+        'tilapia': 'lentils',
+        'tuna': 'lentils',
+        'trout': 'lentils',
+        'crayfish': 'lentils',
+        'lobster': 'lentils',
+        'shrimp': 'lentils', 
+        'prawns': 'lentils', 
+        'oyster': 'lentils', 
+        'mussel': 'lentils' ,
+        'clams': 'lentils'
+    },
+    'stiry fry':{
+        'chicken': 'tofu',
+        'turkey': 'tofu',
+        'beef': 'mushroom',
+        'lamb': 'mushroom',
+        'pork': 'jackfruit',
+        'fish': 'tofu',
+        'ground': 'beans',
+        'ham': 'tempeh',
+        'liver': 'tofu',
+        'bacon': 'vegetarian bacon',
+        'sausage': 'tofu',
+        'veal': 'seitan',
+        'carp': 'lentils',
+        'catfish': 'lentils',
+        'salmon': 'lentils',
+        'tilapia': 'lentils',
+        'tuna': 'lentils',
+        'trout': 'lentils',
+        'crayfish': 'lentils',
+        'lobster': 'lentils',
+        'shrimp': 'lentils', 
+        'prawns': 'lentils', 
+        'oyster': 'lentils', 
+        'mussel': 'lentils' ,
+        'clams': 'lentils'
+    },
+    'stir-fry':{
+        'chicken': 'tofu',
+        'turkey': 'tofu',
+        'beef': 'mushroom',
+        'lamb': 'mushroom',
+        'pork': 'jackfruit',
+        'fish': 'tofu',
+        'ground': 'beans',
+        'ham': 'tempeh',
+        'liver': 'tofu',
+        'bacon': 'vegetarian bacon',
+        'sausage': 'tofu',
+        'veal': 'seitan',
+        'carp': 'lentils',
+        'catfish': 'lentils',
+        'salmon': 'lentils',
+        'tilapia': 'lentils',
+        'tuna': 'lentils',
+        'trout': 'lentils',
+        'crayfish': 'lentils',
+        'lobster': 'lentils',
+        'shrimp': 'lentils', 
+        'prawns': 'lentils', 
+        'oyster': 'lentils', 
+        'mussel': 'lentils' ,
+        'clams': 'lentils'
+    },
+    'grill':{
+        'chicken': 'tofu',
+        'turkey': 'tofu',
+        'beef': 'mushroom',
+        'lamb': 'mushroom',
+        'pork': 'jackfruit',
+        'fish': 'tofu',
+        'ground': 'beans',
+        'ham': 'tempeh',
+        'liver': 'tofu',
+        'bacon': 'vegetarian bacon',
+        'sausage': 'tofu',
+        'veal': 'seitan',
+        'carp': 'lentils',
+        'catfish': 'lentils',
+        'salmon': 'lentils',
+        'tilapia': 'lentils',
+        'tuna': 'lentils',
+        'trout': 'lentils',
+        'crayfish': 'lentils',
+        'lobster': 'lentils',
+        'shrimp': 'lentils', 
+        'prawns': 'lentils', 
+        'oyster': 'lentils', 
+        'mussel': 'lentils' ,
+        'clams': 'lentils'
+    },
+    'steam':{
+        'chicken': 'tofu',
+        'turkey': 'tofu',
+        'beef': 'mushroom',
+        'lamb': 'mushroom',
+        'pork': 'jackfruit',
+        'fish': 'tofu',
+        'ground': 'beans',
+        'ham': 'tofu',
+        'liver': 'tofu',
+        'bacon': 'vegetarian bacon',
+        'sausage': 'tofu',
+        'veal': 'seitan',
+        'carp': 'lentils',
+        'catfish': 'lentils',
+        'salmon': 'lentils',
+        'tilapia': 'lentils',
+        'tuna': 'lentils',
+        'trout': 'lentils',
+        'crayfish': 'lentils',
+        'lobster': 'lentils',
+        'shrimp': 'lentils', 
+        'prawns': 'lentils', 
+        'oyster': 'lentils', 
+        'mussel': 'lentils' ,
+        'clams': 'lentils'
+    },
+    'sautee':{
+        'chicken': 'tofu',
+        'turkey': 'tofu',
+        'beef': 'mushroom',
+        'lamb': 'mushroom',
+        'pork': 'jackfruit',
+        'fish': 'tofu',
+        'ground': 'beans',
+        'ham': 'tempeh',
+        'liver': 'tofu',
+        'bacon': 'vegetarian bacon',
+        'sausage': 'tofu',
+        'veal': 'seitan',
+        'carp': 'lentils',
+        'catfish': 'lentils',
+        'salmon': 'lentils',
+        'tilapia': 'lentils',
+        'tuna': 'lentils',
+        'trout': 'lentils',
+        'crayfish': 'lentils',
+        'lobster': 'lentils',
+        'shrimp': 'lentils', 
+        'prawns': 'lentils', 
+        'oyster': 'lentils', 
+        'mussel': 'lentils' ,
+        'clams': 'lentils'
+    }
+}
+TIME_WORDS = ['minute', 'minutes', 'min', 'mins', 'second', 'seconds', 's', 'hour', 'hours', 'hr', 'hrs', 'h']
+
 class Recipe(object):
 
     def __init__(self, recipe_dic):
@@ -356,14 +349,13 @@ class Recipe(object):
         ingredient_objects = []
         for ing in ingredients_list:
             ingredient_objects.append(Ingredient(ing))
-        # print(ingredient_objects[1].name)
-        # print(ingredient_objects[1].unit)
-        # print(ingredient_objects[1].quantity)
         self.ingredients = ingredient_objects
         # directions object
         self.directions = recipe_dic['directions']
         # set tools
-
+        self.tools = recipe_dic['tools']
+        # set methods
+        self.methods = recipe_dic['methods']
 
         fruits = set([line.strip() for line in open('./ingredient_data/fruits.txt')])
         spices = set([line.strip() for line in open('./ingredient_data/spices.txt')])
@@ -414,17 +406,42 @@ class Recipe(object):
 
 
     def to_veg(self):
-    #     # returns a copy of vegetarian version of recipe
+        # returns a copy of vegetarian version of recipe
+        # get mapping of meat to substitute
+        methods = ['boil', 'bake','simmer','roast','fry','deep fry','deep-fry','stiry fry','stir-fry','grill','steam','sautee']
+        meats_to_cooking_method = self.map_meat_to_cooking_method(self.directions, methods)
+        meats_to_subtitute = self.meat_to_substitute(meats_to_cooking_method)
 
-    #     # make ingredients healthy
-    #     veg_ingredients = copy.deepcopy(self.ingredients)
-    #     for ingredient in veg_ingredients:
-    #         ingredient = ingredient.to_veg()
-        
+        # make ingredients veg
+        veg_ingredients = copy.deepcopy(self.ingredients)
+        for ingredient in veg_ingredients:
+            ingredient = ingredient.to_veg(meats_to_subtitute)
+        print(veg_ingredients)
+        # make direction veg
+        veg_directions = []
+        for i in range(len(self.directions)):
+            new_direction = self.directions[i]
+            for meat, substitute in meats_to_subtitute.items():
+                if meat in new_direction:
+                    new_direction = new_direction.replace(meat, substitute)
+                if 'meat' in new_direction:
+                    if 'ground meat' in new_direction:
+                        new_direction = new_direction.replace('ground meat', substitute)
+                    else:
+                        new_direction = new_direction.replace('meat', substitute)
+                # else:
+                #     if 'ground' in meat:
+                #         veg_directions[i] = direction.replace(meat.split(' ')[1], substitute)
+            veg_directions.append(new_direction)
+        # create new recipe object
+        veg_recipe = copy.deepcopy(self)
+        # veg_recipe.recipe_name = "Vegetarian "+ veg_recipe.recipe_name
+        veg_recipe.ingredients = veg_ingredients
+        veg_recipe.directions = veg_directions
+        print(veg_recipe.directions)
 
-<<<<<<< HEAD
         return veg_recipe
-
+    
     def meat_to_substitute(self, meat_to_cooking_method):
         global COOKING_METHOD_TO_SUBSTITUTE
         output = {}
@@ -434,73 +451,12 @@ class Recipe(object):
             else:
                 output[meat] = COOKING_METHOD_TO_SUBSTITUTE[method]['ground']
         return output
-=======
-    #     # create new recipe object
-    #         veg_recipe = Recipe(self.directions)
->>>>>>> ff6ce51f5e8bcedd6dba4380d4d1bf9ba195be97
-
-    #     return veg_recipe
+ 
         
-    # def map_meat_to_cooking_method(self, directions, methods):
-    #     '''
-    #     returns dictionary of mapping and meat cooking method
-    #     '''
-    #     meat_list = [r'ground (chicken|turkey|beef|lamb|pork)', 'chicken', 'turkey', 'beef', 'lamb', 'pork', 'fish'] #TODO: potentially add types of shellfish
-    #     output = {}
-
-    #     meat_directions = {}
-    #     exclude_list = []
-    #     cur_meat = None
-    #     # get directions with meats only
-    #     for direction in directions:
-    #         for meat in meat_list:
-    #             if meat in exclude_list:
-    #                 continue
-    #             if cur_meat != None:
-    #                 for method in methods:
-    #                     if method in direction:
-    #                         output[cur_meat] = method
-    #             else:
-    #                 found_meat = re.search(meat, direction)
-    #                 if found_meat:
-    #                     cur_meat = found_meat[0]
-    #                     meat_directions[found_meat[0]] = direction
-    #                     # prevent duplicates with ground meats
-    #                     to_exclude = found_meat[0].split()[1]
-    #                     exclude_list.append(to_exclude)   
-    #     return output
-        pass
-
-
-    # def find_and_replace(self, item, subsitute):
-    #     meat_directions = {}
-    #     exclude_list = []
-    #     cur_meat = None
-    #     # get directions with meats only
-    #     for direction in directions:
-    #         for meat in meat_list:
-    #             if meat in exclude_list:
-    #                 continue
-    #             if cur_meat != None:
-    #                 for method in methods:
-    #                     if method in direction:
-    #                         output[cur_meat] = method
-    #             else:
-    #                 found_meat = re.search(meat, direction)
-    #                 if found_meat:
-    #                     cur_meat = found_meat[0]
-    #                     meat_directions[found_meat[0]] = direction
-    #                     # prevent duplicates with ground meats
-    #                     to_exclude = found_meat[0].split()[1]
-    #                     exclude_list.append(to_exclude)   
-    
-
-    def in_food_group(self, ingredient):
-        
+    def map_meat_to_cooking_method(self, directions, methods):
         '''
-        Checks if a string (ingredient) is in one of the ingredient text files
+        returns dictionary of mapping and meat cooking method
         '''
-<<<<<<< HEAD
         meat_list = [r'ground (chicken|turkey|beef|lamb|pork)', 'chicken', 'turkey', 'beef', 'lamb', 'pork', 'fish'] #TODO: potentially add types of shellfish
         output = {}
 
@@ -522,17 +478,71 @@ class Recipe(object):
                         cur_meat = found_meat[0]
                         meat_directions[found_meat[0]] = direction
                         # prevent duplicates with ground meats
-                        # print(found_meat)
-                        # to_exclude = found_meat[0].split()[1]
-                        # exclude_list.append(to_exclude)
+                        to_exclude = found_meat[0].split()[1]
+                        exclude_list.append(to_exclude)   
         return output
-=======
+    
+        
+    def get_ingredients_tools_time(self):
+        # Steps – parse the directions into a series of steps that each consist of ingredients, tools, methods, and times
+        output = []
+        for direction in self.directions:
+            ingredients = self.get_ingredients(self.ingredients, direction)
+            # print(direction)
+            tools = self.get_tools(self.tools, direction)
+            # print(self.methods)
+            methods = self.get_methods(self.methods, direction)
+            time = ""
+            output.append([ingredients, tools, methods, time])
+        return output
+
+    def get_ingredients(self, ingredients, direction):
+        global STOP_WORDS
+        ingredients_in_direction = []
+        for ingredient in ingredients:
+            # tokenize ingredient, remove stop words
+            ingredient_set = ingredient.name.split(' ')
+            ingredient_set = [w for w in ingredient_set if not w in STOP_WORDS] 
+            # get primary words for ingredient name
+            ingredient_pos = nltk.pos_tag(ingredient_set)
+            ingredient_primary = [w[0] for w in ingredient_pos if w[1] in {'NN', 'NNS'}]
+
+            # tokenize direction, remove stop words
+            direction_set = direction.split(' ')
+            direction_set = [w for w in direction_set if not w in STOP_WORDS] 
+            intersection = set(ingredient_primary).intersection(set(direction_set))
+            if len(intersection) > 1:
+                ingredients_in_direction.append(ingredient.name)
+        return ingredients_in_direction
+
+    def get_tools(self, tools, direction):
+        tools_in_direction = []
+        for tool in tools:
+            if tool in direction:
+                tools_in_direction.append(tool)
+            else:
+                # get word to tools matchings
+                do = 'something'
+        return tools_in_direction
+            
+    def get_methods(self, methods, direction):
+        methods_in_direction = []
+        for method in methods:
+            if method in direction:
+                methods_in_direction.append(method)
+        return methods_in_direction
+
+    def in_food_group(self, ingredient):
+        
+        '''
+        Checks if a string (ingredient) is in one of the ingredient text files
+        '''
         for fg in self.food_groups:
             if any(word in ingredient for word in self.food_groups[fg]):
                 return fg
         return False
         
-    def to_chinese(self):
+    def to_asian_cuisine(self, cuisine):
         chinese_cuisine = {
             "spice": ["garlic", "ginger", "clove", "star anise", "peppercorn", "cumin", "sesame seed", "five spice", "sichuan", "white pepper", "bay leaf"],
             "sauce": ["soy sauce", "oyster sauce", "rice vinegar", "seasame oil"],
@@ -543,17 +553,41 @@ class Recipe(object):
             "restriction": ["milk", "cheese", "cream"]
         }
 
-        universal_ingredients = ['salt'] 
->>>>>>> ff6ce51f5e8bcedd6dba4380d4d1bf9ba195be97
+        thai_cuisine = {
+            "spice": ["garlic", "tumeric", "ginger", "basil", "lemongrass", "galangal", "shallots","red chilis"],
+            "sauce": ["fish sauce", "thai curry", "peanut sauce", "dried thai chili dipping sauce"],
+            "carb": ["sticky rice", "pad thai noodles", "pad see ew noodles"],
+            "tool": ["wok"],
+            "method": ["stir-fry"],
+            "restriction": ["milk", "cheese", "cream"]
+        }
 
-        for i in self.ingredients:
-<<<<<<< HEAD
-            print("name:", i.name, "// unit:",i.unit, "// quantity:",i.quantity, "// prep:", i.prep)
+        korean_cuisine = {
+            "spice": ["kimchi", "garlic", "ginger", "scallions", "kochukaru chili flakes", "perilla"],
+            "sauce": ["sesame oil", "gochujang", "soy sauce", "ssamjang", "ganjang"],
+            "carb": ["short grain rice", "naengmyon"],
+            "tool": ["wok"],
+            "method": ["stir-fry"],
+            "restriction": ["milk", "cream"]
+        }
 
-        return cuisine
-=======
-            print("name:", i.name, "// unit:", i.unit, "// quantity:", i.quantity, "// prep:", i.prep)
-        print('----------------------------------------')
+        cuisine_map = {
+            "chinese": chinese_cuisine,
+            "thai": thai_cuisine, 
+            "korean": korean_cuisine
+        }
+
+        if cuisine in cuisine_map.keys(): 
+            sub = cuisine_map[cuisine]
+        else:
+            print('Sorry, this cuisine transformation is not supported.')
+            return 
+
+        universal_ingredients = ['salt', 'pepper', 'black pepper'] 
+
+        # for i in self.ingredients:
+        #     print("name:", i.name, "// unit:", i.unit, "// quantity:", i.quantity, "// prep:", i.prep)
+        # print('----------------------------------------')
         ingredient_split = {
             "fruit": [],
             "spice": [],
@@ -565,7 +599,7 @@ class Recipe(object):
 
         # chinese version of recipe json 
         ch_json = self.recipe_dic.copy() 
-        ch_json["name"] = self.recipe_name[0] + " (Chinese Style)" 
+        ch_json["name"] = self.recipe_name[0] + " (" + cuisine.capitalize() + " Style)" 
 
         for ingredient in self.ingredients:
             food_type = self.in_food_group(ingredient.name)
@@ -581,8 +615,8 @@ class Recipe(object):
             if ing_category:
                 if ing_category in ["carb", "spice", "sauce"] and ing not in universal_ingredients:
                     replaced_ing = ing
-                    ing = random.choice(chinese_cuisine[ing_category])
-                    chinese_cuisine[ing_category].remove(ing)
+                    ing = random.choice(sub[ing_category])
+                    sub[ing_category].remove(ing)
                     if ing_category in ["spice", "sauce"]: 
                         ing += " (to taste)"
 
@@ -592,7 +626,7 @@ class Recipe(object):
                         curr = direction.replace(rep.name, ing)
                         new_dir.append(curr)
                     ch_json["directions"] = new_dir
-            if not any(word in ing for word in chinese_cuisine["restriction"]):
+            if not any(word in ing for word in sub["restriction"]):
                 new_ing.append(ing)
         ch_json["ingredients"] = new_ing
         ch_json["nutrition"].append("* Disclaimer: nutrition facts may differ post recipe transformation *")
@@ -601,8 +635,3 @@ class Recipe(object):
         trans_recipe = Recipe(ch_json)
         return trans_recipe
         
-    def get_ingredients_tools_time(self):
-        pass
-
-
->>>>>>> ff6ce51f5e8bcedd6dba4380d4d1bf9ba195be97
