@@ -69,7 +69,7 @@ class Ingredient(object):
         self.prep = prep
 
     def __repr__(self):
-        return "name: " + self.name + " // unit: "+ self.unit + " // quantity: " + self.quantity + " // prep: " + self.prep + "\n"
+        return "name: " + self.name + " // unit: "+ self.unit + " // quantity: " + self.quantity + " // prep: " + self.prep
         
     def to_healthy(self):
         # convert ingredient to healthy substitute

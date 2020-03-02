@@ -3,11 +3,13 @@ import re
 from ingredient import *
 from nltk.corpus import stopwords
 import json
-import random 
+import random
+import string
+from more_itertools import locate
+ 
+# List of strings
 from RecipeFetcher import *
 
-import json
-import random 
 # from RecipeFetcher import *
 STOP_WORDS =  set(stopwords.words('english'))
 COOKING_METHOD_TO_SUBSTITUTE = { #TODO: add shellfish
@@ -375,7 +377,24 @@ class Recipe(object):
         }
 
     def print_recipe(self):
-        print(self.recipe_name)
+        print("Recipe Name:", self.recipe_name[0])
+        print("Recipe URL:", self.url, "\n")
+        print("Ingredients:")
+        for ing in self.ingredients:
+            print(ing)
+
+        print("\n")
+        print("Directions:")
+        i = 1
+        for dir in self.directions:
+            print("Step", i, ":" , dir)
+            i += 1 
+        print("\n")
+
+        print("Tools needed:", self.tools)
+        print("Methods required:", self.methods)
+        print("Primary cooking method:", "INSERT HERE")
+
         
     def to_healthy(self):
         # returns a copy of healthy version of recipe
@@ -486,17 +505,16 @@ class Recipe(object):
         return output
     
         
-    def get_ingredients_tools_time(self):
+    def get_ingredients_tools_methods_times(self):
         # Steps – parse the directions into a series of steps that each consist of ingredients, tools, methods, and times
         output = []
         for direction in self.directions:
             ingredients = self.get_ingredients(self.ingredients, direction)
-            # print(direction)
             tools = self.get_tools(self.tools, direction)
-            # print(self.methods)
             methods = self.get_methods(self.methods, direction)
-            time = ""
-            output.append([ingredients, tools, methods, time])
+            times = self.get_times(direction)
+            output.append([ingredients, tools, methods, times])
+            
         return output
 
     def get_ingredients(self, ingredients, direction):
@@ -534,6 +552,31 @@ class Recipe(object):
             if method in direction:
                 methods_in_direction.append(method)
         return methods_in_direction
+    
+    def get_times(self, direction):
+        times = []
+        global TIME_WORDS
+        direction = direction.translate(str.maketrans('', '', string.punctuation))
+        direction_tokens = direction.split(' ')
+        # print(direction)
+        for time_word in TIME_WORDS:
+            if time_word in direction_tokens:
+                index_pos_list= list(locate(direction_tokens, lambda a: a == time_word))
+                for time_index in index_pos_list:
+                    flag = True
+                    while time_index >= 0 and flag:
+                        element = direction_tokens[time_index]
+                        if element.isdigit():
+                            element = float(element)
+                            times.append(str(element) + ' ' + time_word)
+                            flag = False
+                        else:
+                            time_index = time_index - 1
+
+        return times
+
+        
+
 
     def in_food_group(self, ingredient):
         
@@ -602,7 +645,7 @@ class Recipe(object):
 
         # chinese version of recipe json 
         ch_json = self.recipe_dic.copy() 
-        ch_json["name"] = self.recipe_name[0] + " (" + cuisine.capitalize() + " Style)" 
+        ch_json["name"] = [self.recipe_name[0] + " (" + cuisine.capitalize() + " Style)"]
 
         for ingredient in self.ingredients:
             food_type = self.in_food_group(ingredient.name)
