@@ -27,7 +27,8 @@ unhealthy_substitutes = {
     'whole wheat bread' : 'white bread',
     'oatmeal' : 'cereal',
     'milk' : 'whole milk',
-    'sweet potato' : 'potato'
+    'sweet potato' : 'potato',
+    'yogurt' : 'sour cream'
 }
 class Ingredient(object):
 
@@ -97,6 +98,11 @@ class Ingredient(object):
         for key in healthy_substitutes:
             if key in self.name:
                 self.name = healthy_substitutes[key]
+
+    def from_healthy(self):
+        for key in unhealthy_substitutes:
+            if key in self.name:
+                self.name = unhealthy_substitutes[key]
 
     def to_veg(self, meats_to_substitute):
         for meat, substitute in meats_to_substitute.items():
