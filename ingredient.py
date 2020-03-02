@@ -2,6 +2,7 @@ import nltk
 import re
 
 VALID_UNITS = ['teaspoon', 'teaspoons', 'tablespoon', 'tablespoons', 'pound', 'pounds', 'ounce', 'ounces', 'cup', 'cups']
+
 class Ingredient(object):
 
     def __init__(self, ingredient_string):
@@ -52,13 +53,14 @@ class Ingredient(object):
         self.quantity = quantity
         self.unit = unit
         self.prep = prep 
-
+    def __repr__(self):
+        return "name: " + self.name + " // unit: "+ self.unit + " // quantity: " + self.quantity + " // prep: " + self.prep + "\n"
     # def to_healthy(self):
     #     # convert ingredient to healthy substitute
     #     pass
     
-    # def to_veg(self):
-    #     # convert ingredient to veg substitutde
-    #     pass
-    
-
+    def to_veg(self, meats_to_substitute):
+        for meat, substitute in meats_to_substitute.items():
+            if meat in self.name:
+                self.name = substitute
+                return

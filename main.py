@@ -6,7 +6,16 @@ from nltk.corpus import wordnet as wn
 rf = RecipeFetcher()
 
 # grabs meat lasagna recipe 
-recipe_json = rf.find_recipe("meat") 
+# recipe_json = rf.find_recipe("meat")
+
+# RF = RecipeFetcher()
+# recipe = RF.find_recipe('chicken alfredo')
+recipe_json = rf.find_recipe('steak')
+recipe = Recipe(recipe_json)
+# print(recipe.ingredients)
+# print(recipe.directions)
+veg_recipe = recipe.to_veg()
+print(veg_recipe.directions)
 # print(recipe_json)
 
 # Parse ingredients for name, quantity, measurement type, descriptor (optional), and preparation (optional)
@@ -29,8 +38,8 @@ recipe_json = rf.find_recipe("meat")
 #     return name, quantity, unit
 
 # Test to cuisine 
-test_recipe = Recipe(recipe_json)
-test_recipe.to_cuisine("chinese")
+# test_recipe = Recipe(recipe_json)
+# test_recipe.to_cuisine("chinese")
 
 # map to relevant classes 
 
