@@ -20,6 +20,7 @@ class Recipe(object):
         self.ingredients = ingredient_objects
         # directions object
         self.directions = recipe_dic['directions']
+        # set tools
 
 
         fruits = set([line.strip() for line in open('./ingredient_data/fruits.txt')])
@@ -196,3 +197,8 @@ class Recipe(object):
         print(ch_json)
         trans_recipe = Recipe(ch_json)
         return trans_recipe
+        
+    def get_ingredients_tools_time(self):
+        pass
+
+
