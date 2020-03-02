@@ -1,8 +1,10 @@
 import copy
 import re 
 from ingredient import *
+from nltk.corpus import stopwords
 
 # from RecipeFetcher import *
+STOP_WORDS =  set(stopwords.words('english'))
 COOKING_METHOD_TO_SUBSTITUTE = { #TODO: add shellfish
     'boil':{
         'chicken': 'tofu',
@@ -330,9 +332,12 @@ COOKING_METHOD_TO_SUBSTITUTE = { #TODO: add shellfish
         'clams': 'lentils'
     }
 }
+TIME_WORDS = ['minute', 'minutes', 'min', 'mins', 'second', 'seconds', 's', 'hour', 'hours', 'hr', 'hrs', 'h']
+
 class Recipe(object):
 
     def __init__(self, recipe_dic):
+        print(recipe_dic['name'])
         self.recipe_name = recipe_dic["name"]
         # list of ingredients objects
         ingredients_list = recipe_dic['ingredients']
@@ -343,6 +348,9 @@ class Recipe(object):
         # directions object
         self.directions = recipe_dic['directions']
         # set tools
+        self.tools = recipe_dic['tools']
+        # set methods
+        self.methods = recipe_dic['methods']
 
     def to_healthy(self):
         # returns a copy of healthy version of recipe
@@ -444,6 +452,51 @@ class Recipe(object):
         
         return cuisine 
     def get_ingredients_tools_time(self):
-        pass
+        # Steps – parse the directions into a series of steps that each consist of ingredients, tools, methods, and times
+        output = []
+        for direction in self.directions:
+            ingredients = self.get_ingredients(self.ingredients, direction)
+            print(direction)
+            tools = self.get_tools(self.tools, direction)
+            print(self.methods)
+            methods = self.get_methods(self.methods, direction)
+            time = ""
+            output.append([ingredients, tools, methods, time])
+        return output
 
+    def get_ingredients(self, ingredients, direction):
+        global STOP_WORDS
+        ingredients_in_direction = []
+        for ingredient in ingredients:
+            # tokenize ingredient, remove stop words
+            ingredient_set = ingredient.name.split(' ')
+            ingredient_set = [w for w in ingredient_set if not w in STOP_WORDS] 
+            # get primary words for ingredient name
+            ingredient_pos = nltk.pos_tag(ingredient_set)
+            ingredient_primary = [w[0] for w in ingredient_pos if w[1] in {'NN', 'NNS'}]
 
+            # tokenize direction, remove stop words
+            direction_set = direction.split(' ')
+            direction_set = [w for w in direction_set if not w in STOP_WORDS] 
+
+            intersection = set(ingredient_primary).intersection(set(direction_set))
+            if len(intersection) > 1:
+                ingredients_in_direction.append(ingredient.name)
+        return ingredients_in_direction
+
+    def get_tools(self, tools, direction):
+        tools_in_direction = []
+        for tool in tools:
+            if tool in direction:
+                tools_in_direction.append(tool)
+            else:
+                # get word to tools matchings
+                do = 'something'
+        return tools_in_direction
+            
+    def get_methods(self, methods, direction):
+        methods_in_direction = []
+        for method in methods:
+            if method in direction:
+                methods_in_direction.append(method)
+        return methods_in_direction

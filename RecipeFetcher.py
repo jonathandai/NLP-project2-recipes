@@ -96,9 +96,11 @@ class RecipeFetcher:
       try: 
          food_search = self.search_recipes(food_name)[0]
          recipe = self.scrape_recipe(food_name, food_search)
+         print(recipe)
          return recipe
       except: 
          print("No recipe results for", food_name, "found, please try another search.")
+         return None
 
 
 # print(recipe)
