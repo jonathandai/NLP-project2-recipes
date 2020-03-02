@@ -4,6 +4,16 @@ from ingredient import *
 
 # from RecipeFetcher import *
 COOKING_METHOD_TO_SUBSTITUTE = { #TODO: add shellfish
+"""
+'liver': 'tofu',
+
+    'quail': 'eggplant',
+    'rabbit': 'beans',
+    'pheasant': 'eggplant',
+    'goose': 'eggplant',
+
+
+"""
     'boil':{
         'chicken': 'tofu',
         'turkey': 'tofu',
@@ -11,7 +21,26 @@ COOKING_METHOD_TO_SUBSTITUTE = { #TODO: add shellfish
         'lamb': 'mushroom',
         'pork': 'mushroom',
         'fish': 'tofu',
-        'ground': 'beans'
+        'ground': 'beans',
+        'ham': 'tempeh',
+        'liver': 'tofu',
+        'ribs': 'tempeh',
+        'bacon': 'vegetarian bacon',
+        'sausage': 'tofu',
+        'veal': 'seitan',
+        'carp': 'lentils',
+        'catfish': 'lentils',
+        'salmon': 'lentils',
+        'tilapia': 'lentils',
+        'tuna': 'lentils'
+        'trout': 'lentils',
+        'crayfish': 'lentils',
+        'lobster': 'lentils',
+        'shrimp': 'lentils', 
+        'prawns': 'lentils', 
+        'oyster': 'lentils', 
+        'mussel': 'lentils' ,
+        'clams': 'lentils'
     }, 
     'bake':{
         'chicken': 'seitan',
@@ -20,7 +49,25 @@ COOKING_METHOD_TO_SUBSTITUTE = { #TODO: add shellfish
         'lamb': 'mushroom',
         'pork': 'mushroom',
         'fish': 'tempeh',
-        'ground': 'beans'
+        'ground': 'beans',
+        'ham': 'tempeh',
+        'liver': 'tofu',
+        'bacon': 'vegetarian bacon',
+        'sausage': 'tofu',
+        'veal': 'seitan',
+        'carp': 'lentils',
+        'catfish': 'lentils',
+        'salmon': 'lentils',
+        'tilapia': 'lentils',
+        'tuna': 'lentils'
+        'trout': 'lentils',
+        'crayfish': 'lentils',
+        'lobster': 'lentils',
+        'shrimp': 'lentils', 
+        'prawns': 'lentils', 
+        'oyster': 'lentils', 
+        'mussel': 'lentils' ,
+        'clams': 'lentils'
     },
     'simmer':{
         'chicken': 'tofu',
@@ -29,7 +76,25 @@ COOKING_METHOD_TO_SUBSTITUTE = { #TODO: add shellfish
         'lamb': 'mushroom',
         'pork': 'jackfruit',
         'fish': 'tofu',
-        'ground': 'beans'
+        'ground': 'beans',
+        'ham': 'tempeh',
+        'liver': 'tofu',
+        'bacon': 'vegetarian bacon',
+        'sausage': 'tofu',
+        'veal': 'seitan',
+        'carp': 'lentils',
+        'catfish': 'lentils',
+        'salmon': 'lentils',
+        'tilapia': 'lentils',
+        'tuna': 'lentils'
+        'trout': 'lentils',
+        'crayfish': 'lentils',
+        'lobster': 'lentils',
+        'shrimp': 'lentils', 
+        'prawns': 'lentils', 
+        'oyster': 'lentils', 
+        'mussel': 'lentils' ,
+        'clams': 'lentils'
     },
     'roast':{
         'chicken': 'tofu',
@@ -38,7 +103,25 @@ COOKING_METHOD_TO_SUBSTITUTE = { #TODO: add shellfish
         'lamb': 'mushroom',
         'pork': 'jackfruit',
         'fish': 'tofu',
-        'ground': 'beans'
+        'ground': 'beans',
+        'ham': 'tempeh',
+        'liver': 'tofu',        
+        'bacon': 'vegetarian bacon',
+        'sausage': 'tofu',
+        'veal': 'seitan',
+        'carp': 'lentils',
+        'catfish': 'lentils',
+        'salmon': 'lentils',
+        'tilapia': 'lentils',
+        'tuna': 'lentils'
+        'trout': 'lentils',
+        'crayfish': 'lentils',
+        'lobster': 'lentils',
+        'shrimp': 'lentils', 
+        'prawns': 'lentils', 
+        'oyster': 'lentils', 
+        'mussel': 'lentils' ,
+        'clams': 'lentils'
     },
     'fry':{
         'chicken': 'tofu',
@@ -47,7 +130,25 @@ COOKING_METHOD_TO_SUBSTITUTE = { #TODO: add shellfish
         'lamb': 'mushroom',
         'pork': 'jackfruit',
         'fish': 'tofu',
-        'ground': 'beans'
+        'ground': 'beans',
+        'ham': 'tempeh',
+        'liver': 'tofu',
+        'bacon': 'vegetarian bacon',
+        'sausage': 'tofu',
+        'veal': 'seitan',
+        'carp': 'lentils',
+        'catfish': 'lentils',
+        'salmon': 'lentils',
+        'tilapia': 'lentils',
+        'tuna': 'lentils'
+        'trout': 'lentils',
+        'crayfish': 'lentils',
+        'lobster': 'lentils',
+        'shrimp': 'lentils', 
+        'prawns': 'lentils', 
+        'oyster': 'lentils', 
+        'mussel': 'lentils' ,
+        'clams': 'lentils'
     },
     'deep fry':{
         'chicken': 'tofu',
@@ -56,7 +157,25 @@ COOKING_METHOD_TO_SUBSTITUTE = { #TODO: add shellfish
         'lamb': 'mushroom',
         'pork': 'jackfruit',
         'fish': 'tofu',
-        'ground': 'beans'
+        'ground': 'beans',
+        'ham': 'tempeh',
+        'liver': 'tofu',
+        'bacon': 'vegetarian bacon',
+        'sausage': 'tofu',
+        'veal': 'seitan',
+        'carp': 'lentils',
+        'catfish': 'lentils',
+        'salmon': 'lentils',
+        'tilapia': 'lentils',
+        'tuna': 'lentils'
+        'trout': 'lentils',
+        'crayfish': 'lentils',
+        'lobster': 'lentils',
+        'shrimp': 'lentils', 
+        'prawns': 'lentils', 
+        'oyster': 'lentils', 
+        'mussel': 'lentils' ,
+        'clams': 'lentils'
     },
     'deep-fry':{
         'chicken': 'tofu',
@@ -65,7 +184,25 @@ COOKING_METHOD_TO_SUBSTITUTE = { #TODO: add shellfish
         'lamb': 'mushroom',
         'pork': 'jackfruit',
         'fish': 'tofu',
-        'ground': 'beans'
+        'ground': 'beans',
+        'ham': 'tempeh',
+        'liver': 'tofu',
+        'bacon': 'vegetarian bacon',
+        'sausage': 'tofu',
+        'veal': 'seitan',
+        'carp': 'lentils',
+        'catfish': 'lentils',
+        'salmon': 'lentils',
+        'tilapia': 'lentils',
+        'tuna': 'lentils'
+        'trout': 'lentils',
+        'crayfish': 'lentils',
+        'lobster': 'lentils',
+        'shrimp': 'lentils', 
+        'prawns': 'lentils', 
+        'oyster': 'lentils', 
+        'mussel': 'lentils' ,
+        'clams': 'lentils'
     },
     'stiry fry':{
         'chicken': 'tofu',
@@ -74,7 +211,25 @@ COOKING_METHOD_TO_SUBSTITUTE = { #TODO: add shellfish
         'lamb': 'mushroom',
         'pork': 'jackfruit',
         'fish': 'tofu',
-        'ground': 'beans'
+        'ground': 'beans',
+        'ham': 'tempeh',
+        'liver': 'tofu',
+        'bacon': 'vegetarian bacon',
+        'sausage': 'tofu',
+        'veal': 'seitan',
+        'carp': 'lentils',
+        'catfish': 'lentils',
+        'salmon': 'lentils',
+        'tilapia': 'lentils',
+        'tuna': 'lentils'
+        'trout': 'lentils',
+        'crayfish': 'lentils',
+        'lobster': 'lentils',
+        'shrimp': 'lentils', 
+        'prawns': 'lentils', 
+        'oyster': 'lentils', 
+        'mussel': 'lentils' ,
+        'clams': 'lentils'
     },
     'stir-fry':{
         'chicken': 'tofu',
@@ -83,7 +238,25 @@ COOKING_METHOD_TO_SUBSTITUTE = { #TODO: add shellfish
         'lamb': 'mushroom',
         'pork': 'jackfruit',
         'fish': 'tofu',
-        'ground': 'beans'
+        'ground': 'beans',
+        'ham': 'tempeh',
+        'liver': 'tofu',
+        'bacon': 'vegetarian bacon',
+        'sausage': 'tofu',
+        'veal': 'seitan',
+        'carp': 'lentils',
+        'catfish': 'lentils',
+        'salmon': 'lentils',
+        'tilapia': 'lentils',
+        'tuna': 'lentils'
+        'trout': 'lentils',
+        'crayfish': 'lentils',
+        'lobster': 'lentils',
+        'shrimp': 'lentils', 
+        'prawns': 'lentils', 
+        'oyster': 'lentils', 
+        'mussel': 'lentils' ,
+        'clams': 'lentils'
     },
     'grill':{
         'chicken': 'tofu',
@@ -92,7 +265,25 @@ COOKING_METHOD_TO_SUBSTITUTE = { #TODO: add shellfish
         'lamb': 'mushroom',
         'pork': 'jackfruit',
         'fish': 'tofu',
-        'ground': 'beans'
+        'ground': 'beans',
+        'ham': 'tempeh',
+        'liver': 'tofu',
+        'bacon': 'vegetarian bacon',
+        'sausage': 'tofu',
+        'veal': 'seitan',
+        'carp': 'lentils',
+        'catfish': 'lentils',
+        'salmon': 'lentils',
+        'tilapia': 'lentils',
+        'tuna': 'lentils'
+        'trout': 'lentils',
+        'crayfish': 'lentils',
+        'lobster': 'lentils',
+        'shrimp': 'lentils', 
+        'prawns': 'lentils', 
+        'oyster': 'lentils', 
+        'mussel': 'lentils' ,
+        'clams': 'lentils'
     },
     'steam':{
         'chicken': 'tofu',
@@ -101,7 +292,25 @@ COOKING_METHOD_TO_SUBSTITUTE = { #TODO: add shellfish
         'lamb': 'mushroom',
         'pork': 'jackfruit',
         'fish': 'tofu',
-        'ground': 'beans'
+        'ground': 'beans',
+        'ham': 'tofu',
+        'liver': 'tofu',
+        'bacon': 'vegetarian bacon',
+        'sausage': 'tofu',
+        'veal': 'seitan',
+        'carp': 'lentils',
+        'catfish': 'lentils',
+        'salmon': 'lentils',
+        'tilapia': 'lentils',
+        'tuna': 'lentils'
+        'trout': 'lentils',
+        'crayfish': 'lentils',
+        'lobster': 'lentils',
+        'shrimp': 'lentils', 
+        'prawns': 'lentils', 
+        'oyster': 'lentils', 
+        'mussel': 'lentils' ,
+        'clams': 'lentils'
     },
     'sautee':{
         'chicken': 'tofu',
@@ -110,7 +319,25 @@ COOKING_METHOD_TO_SUBSTITUTE = { #TODO: add shellfish
         'lamb': 'mushroom',
         'pork': 'jackfruit',
         'fish': 'tofu',
-        'ground': 'beans'
+        'ground': 'beans',
+        'ham': 'tempeh',
+        'liver': 'tofu',
+        'bacon': 'vegetarian bacon',
+        'sausage': 'tofu',
+        'veal': 'seitan',
+        'carp': 'lentils',
+        'catfish': 'lentils',
+        'salmon': 'lentils',
+        'tilapia': 'lentils',
+        'tuna': 'lentils'
+        'trout': 'lentils',
+        'crayfish': 'lentils',
+        'lobster': 'lentils',
+        'shrimp': 'lentils', 
+        'prawns': 'lentils', 
+        'oyster': 'lentils', 
+        'mussel': 'lentils' ,
+        'clams': 'lentils'
     }
 }
 class Recipe(object):

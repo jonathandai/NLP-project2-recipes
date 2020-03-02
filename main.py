@@ -10,7 +10,7 @@ rf = RecipeFetcher()
 
 # RF = RecipeFetcher()
 # recipe = RF.find_recipe('chicken alfredo')
-recipe_json = rf.find_recipe('meat lasagna')
+recipe_json = rf.find_recipe('steak')
 recipe = Recipe(recipe_json)
 # print(recipe.ingredients)
 # print(recipe.directions)
