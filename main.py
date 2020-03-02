@@ -10,10 +10,11 @@ rf = RecipeFetcher()
 
 # RF = RecipeFetcher()
 # recipe = RF.find_recipe('chicken alfredo')
+
 recipe_json = rf.find_recipe('meat lasagna')
-# print(recipe_json)
 recipe = Recipe(recipe_json)
-recipe.get_ingredients_tools_time()
+recipe.to_veg()
+print(recipe)
 # print(recipe.ingredients)
 # print(recipe.directions)
 # veg_recipe = recipe.to_veg()
@@ -40,8 +41,8 @@ recipe.get_ingredients_tools_time()
 #     return name, quantity, unit
 
 # Test to cuisine 
-# test_recipe = Recipe(recipe_json)
-# test_recipe.to_cuisine("chinese")
+test_recipe = Recipe(recipe_json)
+test_recipe.to_chinese()
 
 # map to relevant classes 
 

@@ -1,8 +1,12 @@
 import copy
-import re 
+import re
 from ingredient import *
 from nltk.corpus import stopwords
 
+from RecipeFetcher import *
+
+import json
+import random 
 # from RecipeFetcher import *
 STOP_WORDS =  set(stopwords.words('english'))
 COOKING_METHOD_TO_SUBSTITUTE = { #TODO: add shellfish
@@ -338,12 +342,19 @@ class Recipe(object):
 
     def __init__(self, recipe_dic):
         print(recipe_dic['name'])
+class Recipe(object):
+
+    def __init__(self, recipe_dic):
+        self.recipe_dic = recipe_dic
         self.recipe_name = recipe_dic["name"]
         # list of ingredients objects
         ingredients_list = recipe_dic['ingredients']
         ingredient_objects = []
         for ing in ingredients_list:
             ingredient_objects.append(Ingredient(ing))
+        # print(ingredient_objects[1].name)
+        # print(ingredient_objects[1].unit)
+        # print(ingredient_objects[1].quantity)
         self.ingredients = ingredient_objects
         # directions object
         self.directions = recipe_dic['directions']
@@ -352,6 +363,24 @@ class Recipe(object):
         # set methods
         self.methods = recipe_dic['methods']
 
+
+        fruits = set([line.strip() for line in open('./ingredient_data/fruits.txt')])
+        spices = set([line.strip() for line in open('./ingredient_data/spices.txt')])
+        vegetables = set([line.strip() for line in open('./ingredient_data/vegetables.txt')])
+        sauces = set([line.strip() for line in open('./ingredient_data/sauces.txt')])
+        carbs = set([line.strip() for line in open('./ingredient_data/carbs.txt')])
+        binders = set([line.strip() for line in open('./ingredient_data/binders.txt')])
+
+        self.food_groups = {
+            "fruit": fruits,
+            "spice": spices,
+            "vegetable": vegetables,
+            "sauce": sauces,
+            "carb": carbs,
+            "binder": binders,
+        }
+
+        
     def to_healthy(self):
         # returns a copy of healthy version of recipe
 
@@ -359,15 +388,29 @@ class Recipe(object):
         healthy_ingredients = copy.deepcopy(self.ingredients)
         for ingredient in healthy_ingredients:
             ingredient = ingredient.to_healthy()
-        
+
+
         # make directions healthy
-        healthy_directions = self.directions.to_healthy()
+        healthy_directions = copy.deepcopy(self.directions)
+
+        for i in range(len(healthy_directions)):
+            curr_direction = healthy_directions[i]
+            #print(curr_direction)
+            for unhealthy_ing in healthy_substitutes:
+                if unhealthy_ing in curr_direction:
+                    curr_direction = curr_direction.replace(unhealthy_ing, healthy_substitutes[unhealthy_ing])
+                    healthy_directions[i] = curr_direction
+                    #print(unhealthy_ing)
+                    #print(healthy_substitutes[unhealthy_ing])
+
+        healthy_recipe = copy.deepcopy(self)
 
         # create new recipe object
-        healthy_recipe = Recipe(healthy_directions)
+        healthy_recipe.ingredients = healthy_ingredients
+        healthy_recipe.directions = healthy_directions
 
         return healthy_recipe
-        
+
 
     def to_veg(self):
         # returns a copy of vegetarian version of recipe
@@ -405,7 +448,7 @@ class Recipe(object):
         veg_recipe.directions = veg_directions
 
         return veg_recipe
-     
+
     def meat_to_substitute(self, meat_to_cooking_method):
         global COOKING_METHOD_TO_SUBSTITUTE
         output = {}
@@ -415,7 +458,8 @@ class Recipe(object):
             else:
                 output[meat] = COOKING_METHOD_TO_SUBSTITUTE[method]['ground']
         return output
-
+ 
+        
     def map_meat_to_cooking_method(self, directions, methods):
         '''
         returns dictionary of mapping and meat cooking method
@@ -441,24 +485,57 @@ class Recipe(object):
                         cur_meat = found_meat[0]
                         meat_directions[found_meat[0]] = direction
                         # prevent duplicates with ground meats
-                        # print(found_meat)
-                        # to_exclude = found_meat[0].split()[1]
-                        # exclude_list.append(to_exclude)   
+                        to_exclude = found_meat[0].split()[1]
+                        exclude_list.append(to_exclude)   
         return output
 
-    def to_cuisine(self, cuisine):
-        for i in self.ingredients:
-            print("name:", i.name, "// unit:",i.unit, "// quantity:",i.quantity, "// prep:", i.prep)
+
+   
+    def in_food_group(self, ingredient):
         
-        return cuisine 
+        '''
+        Checks if a string (ingredient) is in one of the ingredient text files
+        '''
+        meat_list = [r'ground (chicken|turkey|beef|lamb|pork)', 'chicken', 'turkey', 'beef', 'lamb', 'pork', 'fish'] #TODO: potentially add types of shellfish
+        output = {}
+
+        meat_directions = {}
+        exclude_list = []
+        cur_meat = None
+        # get directions with meats only
+        for direction in directions:
+            for meat in meat_list:
+                if meat in exclude_list:
+                    continue
+                if cur_meat != None:
+                    for method in methods:
+                        if method in direction:
+                            output[cur_meat] = method
+                else:
+                    found_meat = re.search(meat, direction)
+                    if found_meat:
+                        cur_meat = found_meat[0]
+                        meat_directions[found_meat[0]] = direction
+                        # prevent duplicates with ground meats
+                        # print(found_meat)
+                        # to_exclude = found_meat[0].split()[1]
+                        # exclude_list.append(to_exclude)
+        return output
+        for fg in self.food_groups:
+            if any(word in ingredient for word in self.food_groups[fg]):
+                return fg
+        return False
+        
+    
+        
     def get_ingredients_tools_time(self):
         # Steps – parse the directions into a series of steps that each consist of ingredients, tools, methods, and times
         output = []
         for direction in self.directions:
             ingredients = self.get_ingredients(self.ingredients, direction)
-            print(direction)
+            # print(direction)
             tools = self.get_tools(self.tools, direction)
-            print(self.methods)
+            # print(self.methods)
             methods = self.get_methods(self.methods, direction)
             time = ""
             output.append([ingredients, tools, methods, time])
@@ -478,7 +555,6 @@ class Recipe(object):
             # tokenize direction, remove stop words
             direction_set = direction.split(' ')
             direction_set = [w for w in direction_set if not w in STOP_WORDS] 
-
             intersection = set(ingredient_primary).intersection(set(direction_set))
             if len(intersection) > 1:
                 ingredients_in_direction.append(ingredient.name)
