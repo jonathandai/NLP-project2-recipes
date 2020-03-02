@@ -2,11 +2,14 @@ import copy
 import re
 from ingredient import *
 from nltk.corpus import stopwords
-
+import json
+import random
+import string
+from more_itertools import locate
+ 
+# List of strings
 from RecipeFetcher import *
 
-import json
-import random 
 # from RecipeFetcher import *
 STOP_WORDS =  set(stopwords.words('english'))
 COOKING_METHOD_TO_SUBSTITUTE = { #TODO: add shellfish
@@ -348,9 +351,6 @@ class Recipe(object):
         ingredient_objects = []
         for ing in ingredients_list:
             ingredient_objects.append(Ingredient(ing))
-        # print(ingredient_objects[1].name)
-        # print(ingredient_objects[1].unit)
-        # print(ingredient_objects[1].quantity)
         self.ingredients = ingredient_objects
         # directions object
         self.directions = recipe_dic['directions']
@@ -358,7 +358,6 @@ class Recipe(object):
         self.tools = recipe_dic['tools']
         # set methods
         self.methods = recipe_dic['methods']
-
 
         fruits = set([line.strip() for line in open('./ingredient_data/fruits.txt')])
         spices = set([line.strip() for line in open('./ingredient_data/spices.txt')])
@@ -419,7 +418,6 @@ class Recipe(object):
         veg_ingredients = copy.deepcopy(self.ingredients)
         for ingredient in veg_ingredients:
             ingredient = ingredient.to_veg(meats_to_subtitute)
-        print(veg_ingredients)
         # make direction veg
         veg_directions = []
         for i in range(len(self.directions)):
@@ -441,7 +439,6 @@ class Recipe(object):
         # veg_recipe.recipe_name = "Vegetarian "+ veg_recipe.recipe_name
         veg_recipe.ingredients = veg_ingredients
         veg_recipe.directions = veg_directions
-        print(veg_recipe.directions)
 
         return veg_recipe
     
@@ -486,17 +483,16 @@ class Recipe(object):
         return output
     
         
-    def get_ingredients_tools_time(self):
+    def get_ingredients_tools_methods_times(self):
         # Steps – parse the directions into a series of steps that each consist of ingredients, tools, methods, and times
         output = []
         for direction in self.directions:
             ingredients = self.get_ingredients(self.ingredients, direction)
-            # print(direction)
             tools = self.get_tools(self.tools, direction)
-            # print(self.methods)
             methods = self.get_methods(self.methods, direction)
-            time = ""
-            output.append([ingredients, tools, methods, time])
+            times = self.get_times(direction)
+            output.append([ingredients, tools, methods, times])
+            
         return output
 
     def get_ingredients(self, ingredients, direction):
@@ -534,3 +530,132 @@ class Recipe(object):
             if method in direction:
                 methods_in_direction.append(method)
         return methods_in_direction
+    
+    def get_times(self, direction):
+        times = []
+        global TIME_WORDS
+        direction = direction.translate(str.maketrans('', '', string.punctuation))
+        direction_tokens = direction.split(' ')
+        # print(direction)
+        for time_word in TIME_WORDS:
+            if time_word in direction_tokens:
+                index_pos_list= list(locate(direction_tokens, lambda a: a == time_word))
+                for time_index in index_pos_list:
+                    flag = True
+                    while time_index >= 0 and flag:
+                        element = direction_tokens[time_index]
+                        if element.isdigit():
+                            element = float(element)
+                            times.append(str(element) + ' ' + time_word)
+                            flag = False
+                        else:
+                            time_index = time_index - 1
+
+        return times
+
+        
+
+
+    def in_food_group(self, ingredient):
+        
+        '''
+        Checks if a string (ingredient) is in one of the ingredient text files
+        '''
+        for fg in self.food_groups:
+            if any(word in ingredient for word in self.food_groups[fg]):
+                return fg
+        return False
+        
+    def to_asian_cuisine(self, cuisine):
+        chinese_cuisine = {
+            "spice": ["garlic", "ginger", "clove", "star anise", "peppercorn", "cumin", "sesame seed", "five spice", "sichuan", "white pepper", "bay leaf"],
+            "sauce": ["soy sauce", "oyster sauce", "rice vinegar", "seasame oil"],
+            "vegetable": ["bitter melon", "chinese cabbage", "bok choy", "eggplant", "shiitake mushroom"],
+            "carb": ["white rice", "egg noodles"],
+            "tool": ["wok"],
+            "method": ["stir-fry"],
+            "restriction": ["milk", "cheese", "cream"]
+        }
+
+        thai_cuisine = {
+            "spice": ["garlic", "tumeric", "ginger", "basil", "lemongrass", "galangal", "shallots","red chilis"],
+            "sauce": ["fish sauce", "thai curry", "peanut sauce", "dried thai chili dipping sauce"],
+            "carb": ["sticky rice", "pad thai noodles", "pad see ew noodles"],
+            "tool": ["wok"],
+            "method": ["stir-fry"],
+            "restriction": ["milk", "cheese", "cream"]
+        }
+
+        korean_cuisine = {
+            "spice": ["kimchi", "garlic", "ginger", "scallions", "kochukaru chili flakes", "perilla"],
+            "sauce": ["sesame oil", "gochujang", "soy sauce", "ssamjang", "ganjang"],
+            "carb": ["short grain rice", "naengmyon"],
+            "tool": ["wok"],
+            "method": ["stir-fry"],
+            "restriction": ["milk", "cream"]
+        }
+
+        cuisine_map = {
+            "chinese": chinese_cuisine,
+            "thai": thai_cuisine, 
+            "korean": korean_cuisine
+        }
+
+        if cuisine in cuisine_map.keys(): 
+            sub = cuisine_map[cuisine]
+        else:
+            print('Sorry, this cuisine transformation is not supported.')
+            return 
+
+        universal_ingredients = ['salt', 'pepper', 'black pepper'] 
+
+        # for i in self.ingredients:
+        #     print("name:", i.name, "// unit:", i.unit, "// quantity:", i.quantity, "// prep:", i.prep)
+        # print('----------------------------------------')
+        ingredient_split = {
+            "fruit": [],
+            "spice": [],
+            "vegetable": [],
+            "sauce": [],
+            "carb": [],
+            "binder": [],
+        }
+
+        # chinese version of recipe json 
+        ch_json = self.recipe_dic.copy() 
+        ch_json["name"] = self.recipe_name[0] + " (" + cuisine.capitalize() + " Style)" 
+
+        for ingredient in self.ingredients:
+            food_type = self.in_food_group(ingredient.name)
+            if food_type:
+                ingredient_split[food_type].append(ingredient)
+                continue
+
+        new_ing = []
+        new_dir = []
+        for ing in ch_json["ingredients"]: 
+            # first remove restrictions 
+            ing_category = self.in_food_group(ing)
+            if ing_category:
+                if ing_category in ["carb", "spice", "sauce"] and ing not in universal_ingredients:
+                    replaced_ing = ing
+                    ing = random.choice(sub[ing_category])
+                    sub[ing_category].remove(ing)
+                    if ing_category in ["spice", "sauce"]: 
+                        ing += " (to taste)"
+
+                    rep = Ingredient(replaced_ing)
+                    new_dir = []
+                    for direction in ch_json["directions"]:
+                        curr = direction.replace(rep.name, ing)
+                        new_dir.append(curr)
+                    ch_json["directions"] = new_dir
+            if not any(word in ing for word in sub["restriction"]):
+                new_ing.append(ing)
+        ch_json["ingredients"] = new_ing
+        ch_json["nutrition"].append("* Disclaimer: nutrition facts may differ post recipe transformation *")
+        
+        print(ch_json)
+        trans_recipe = Recipe(ch_json)
+        return trans_recipe
+        

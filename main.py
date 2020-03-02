@@ -2,7 +2,7 @@ from RecipeFetcher import *
 from recipe import *
 from nltk.corpus import wordnet as wn
 
-# initializze recipe fetcher object, can be used to scrap any food
+# initialize recipe fetcher object, can be used to scrap any food
 rf = RecipeFetcher()
 
 # grabs meat lasagna recipe 
@@ -12,7 +12,9 @@ rf = RecipeFetcher()
 # recipe = RF.find_recipe('chicken alfredo')
 
 recipe_json = rf.find_recipe('meat lasagna')
+# recipe_json = rf.find_recipe('meat')
 recipe = Recipe(recipe_json)
+recipe.get_ingredients_tools_methods_times()
 # veg_recipe = recipe.to_veg()
 # print(veg_recipe.ingredients)
 # print(veg_recipe.directions)
@@ -44,6 +46,10 @@ recipe = Recipe(recipe_json)
 # # Test to cuisine 
 # test_recipe = Recipe(recipe_json)
 # test_recipe.to_chinese()
+# Test to cuisine 
+# test_recipe = Recipe(recipe_json)
+# test_recipe.to_asian_cuisine("thai")
+# print(test_recipe)
 
 # map to relevant classes 
 
