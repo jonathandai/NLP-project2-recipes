@@ -384,16 +384,29 @@ class Recipe(object):
 
         print("\n")
         print("Directions:")
+        
+        direction_items = self.get_ingredients_tools_methods_times() 
+        print(direction_items, '-------------------------')
         i = 1
         for dir in self.directions:
             print("Step", i, ":" , dir)
+            print(i, '------------------')
+            print(direction_items)
+            curr_direction_item = direction_items[i-1]
+            
+            print("Ingredients:", curr_direction_item[0])
+            print("Tools:", curr_direction_item[1])
+            print("Methods:", curr_direction_item[2])
+            print("Times:", curr_direction_item[3])
             i += 1 
+            print('-----------------------------------')
         print("\n")
 
         print("Tools needed:", self.tools)
         print("Methods required:", self.methods)
         print("Primary cooking method:", "INSERT HERE")
-
+        print("\n")
+        print("---------------------------------------------------------------------------------")
         
     def to_healthy(self):
         # returns a copy of healthy version of recipe
@@ -522,7 +535,7 @@ class Recipe(object):
                     if 'ground' in meat:
                         meat_tokens = meat.split(' ')
                         exclude_list.append(meat_tokens[1])
-        print('checking ignredients')
+        # print('checking ignredients')
         # jank case for if meat not found in directions
         for ingredient in self.ingredients:
             for meat in meat_list:
@@ -556,6 +569,7 @@ class Recipe(object):
             # tokenize ingredient, remove stop words
             ingredient_set = ingredient.name.split(' ')
             ingredient_set = [w for w in ingredient_set if not w in STOP_WORDS]
+            ingredient_set = [w for w in ingredient_set if w != ""]
             # get primary words for ingredient name
             ingredient_pos = nltk.pos_tag(ingredient_set)
             ingredient_primary = [w[0] for w in ingredient_pos if w[1] in {'NN', 'NNS'}]
@@ -564,7 +578,7 @@ class Recipe(object):
             direction_set = direction.split(' ')
             direction_set = [w for w in direction_set if not w in STOP_WORDS]
             intersection = set(ingredient_primary).intersection(set(direction_set))
-            if len(intersection) > 1:
+            if len(intersection) >= 1:
                 ingredients_in_direction.append(ingredient.name)
         return ingredients_in_direction
 
@@ -634,7 +648,7 @@ class Recipe(object):
         thai_cuisine = {
             "spice": ["garlic", "tumeric", "ginger", "basil", "lemongrass", "galangal", "shallots","red chilis"],
             "sauce": ["fish sauce", "thai curry", "peanut sauce", "dried thai chili dipping sauce"],
-            "carb": ["sticky rice", "pad thai noodles", "pad see ew noodles"],
+            "carb": ["sticky rice", "pad-thai noodles", "pad-see-ew noodles"],
             "tool": ["wok"],
             "method": ["stir-fry"],
             "restriction": ["milk", "cheese", "cream"]
@@ -643,7 +657,7 @@ class Recipe(object):
         korean_cuisine = {
             "spice": ["kimchi", "garlic", "ginger", "scallions", "kochukaru chili flakes", "perilla"],
             "sauce": ["sesame oil", "gochujang", "soy sauce", "ssamjang", "ganjang"],
-            "carb": ["short grain rice", "naengmyon"],
+            "carb": ["short-grain rice", "naengmyon"],
             "tool": ["wok"],
             "method": ["stir-fry"],
             "restriction": ["milk", "cream"]
@@ -709,6 +723,5 @@ class Recipe(object):
         ch_json["ingredients"] = new_ing
         ch_json["nutrition"].append("* Disclaimer: nutrition facts may differ post recipe transformation *")
         
-        # print(ch_json)
         trans_recipe = Recipe(ch_json)
         return trans_recipe
