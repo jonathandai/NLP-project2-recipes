@@ -3,16 +3,32 @@ import re
 from nltk import pos_tag
 
 VALID_UNITS = ['teaspoon', 'teaspoons', 'tablespoon', 'tablespoons', 'pound', 'pounds', 'ounce', 'ounces', 'cup', 'cups']
-healthy_substitutes = {
-            'butter' : '½ cup coconut oil',
-            'egg' : '3 egg whites',
-            'Mayonnaise' : 'light Mayonnaise',
-            'heavy cream' : 'pureed beans',
-            'bread crumbs' : 'oatmeal',
-            'flour' : 'almond flour',
-            'White Rice' : 'Brown Rice',
-            'pasta' : 'zoodles (Zucchini Noodles)'}
 
+healthy_substitutes = {
+    'butter' : '½ cup coconut oil',
+    'egg' : '3 egg whites',
+    'sugar' : '½ cup agave',
+    'mayonnaise' : 'light mayonnaise',
+    'heavy cream' : 'pureed beans',
+    'bread crumbs' : 'oatmeal',
+    'flour' : 'almond flour',
+    'White Rice' : 'Brown Rice',
+    'pasta' : 'zoodles (Zucchini Noodles)'
+  }
+
+unhealthy_substitutes = {
+    'Brown Rice' : 'White Rice',
+    'whole wheat pasta' : 'pasta',
+    'light mayonnaise' : 'mayonnaise',
+    'brown sugar' : 'sugar',
+    'olive oil' : 'butter',
+    'grapeseed oil' : 'corn oil',
+    'coconut oil' : 'corn oil',
+    'whole wheat bread' : 'white bread',
+    'oatmeal' : 'cereal',
+    'milk' : 'whole milk',
+    'sweet potato' : 'potato'
+}
 class Ingredient(object):
 
     def __init__(self, ingredient_string):
@@ -28,10 +44,6 @@ class Ingredient(object):
             new_start_index = tokens.index(substring_tokens[1]+')') + 2
             name_tokens = tokens[new_start_index:]
             name =  ' '.join(name_tokens)
-
-            tagged_ingredient = pos_tag(name.split())
-            parsed_ingredient = [word for word, pos in tagged_ingredient if pos == 'NNP']
-            ingredient_descriptor = [word for word, pos in tagged_ingredient if pos == 'ADJ']
         else:
             text = nltk.word_tokenize(ingredient_string)
             tagged_text = nltk.pos_tag(text)
@@ -63,10 +75,19 @@ class Ingredient(object):
             name = name_split_comma[0]
             prep = name_split_comma[1]
 
+        descriptors = []
+        if len(name.split()) > 1:
+            for i, name in enumerate(name.split()):
+                if i != len(name.split())+1:
+                    descriptors.append(name)
+
+
+
         self.name = name
         self.quantity = quantity
         self.unit = unit
         self.prep = prep
+        self.descriptor = descriptors
 
     def __repr__(self):
         return "name: " + self.name + " // unit: "+ self.unit + " // quantity: " + self.quantity + " // prep: " + self.prep
