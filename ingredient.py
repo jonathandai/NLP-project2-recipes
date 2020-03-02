@@ -59,7 +59,6 @@ class Ingredient(object):
 
         prep = ""
         if ", " in name:
-            print(name, '-----')
             name_split_comma = name.split(',', 1)
             name = name_split_comma[0]
             prep = name_split_comma[1]
