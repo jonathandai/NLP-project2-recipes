@@ -416,8 +416,9 @@ class Recipe(object):
         index = 1
         curr_direction_item = direction_items[index-1]
         times = curr_direction_item[3]
-        primary_method = ""
-        
+        methods = self.methods
+        biggest_time = "0"
+
         if len(self.methods) > 1:
             for method in self.methods:
                 for time in times:
