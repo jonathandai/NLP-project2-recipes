@@ -386,18 +386,19 @@ class Recipe(object):
         print("Directions:")
 
         direction_items = self.get_ingredients_tools_methods_times()
-        print(direction_items, '-------------------------')
+        # print(direction_items, '-------------------------')
         i = 1
         for dir in self.directions:
             print("Step", i, ":" , dir)
-            print(i, '------------------')
+            # print(i, '------------------')
             print(direction_items)
             curr_direction_item = direction_items[i-1]
 
             print("Ingredients:", curr_direction_item[0])
             print("Tools:", curr_direction_item[1])
             print("Methods:", curr_direction_item[2])
-            print("Times:", curr_direction_item[3])
+            print("Additional methods:", curr_direction_item[3])
+            print("Times:", curr_direction_item[4])
             i += 1
             print('-----------------------------------')
         print("\n")
@@ -572,9 +573,18 @@ class Recipe(object):
             tools = self.get_tools(self.tools, direction)
             methods = self.get_methods(self.methods, direction)
             times = self.get_times(direction)
-            output.append([ingredients, tools, methods, times])
+            other_methods = self.get_other_methods(direction)
+            output.append([ingredients, tools, methods, other_methods, times])
 
         return output
+
+    def get_other_methods(self, direction):
+        OTHER_COOKING_METHODS = ["chop", "grate", "stir", "shake", "mince", "crush", "squeeze", "julienne", "slice", "baste", "fillet", "garnish"]
+        methods_in_direction = []
+        for method in OTHER_COOKING_METHODS:
+            if method in direction:
+                methods_in_direction.append(method)
+        return methods_in_direction
 
     def get_ingredients(self, ingredients, direction):
         global STOP_WORDS
