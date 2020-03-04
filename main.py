@@ -18,7 +18,7 @@ def main():
     recipe.print_recipe()
 
     # ask user what transformation they want to perform
-    transformation = input("Please enter the transformation you want (vegetarian, healty, asian). If none, enter any character:\n")
+    transformation = input("Please enter the transformation you want (vegetarian, healthy, asian). If none, enter any character:\n")
     if transformation == "vegetarian":
         veg = recipe.to_veg()
         veg.print_recipe()

@@ -384,30 +384,51 @@ class Recipe(object):
 
         print("\n")
         print("Directions:")
-        
-        direction_items = self.get_ingredients_tools_methods_times() 
-        print(direction_items, '-------------------------')
+
+        direction_items = self.get_ingredients_tools_methods_times()
+        # print(direction_items, '-------------------------')
         i = 1
         for dir in self.directions:
             print("Step", i, ":" , dir)
-            print(i, '------------------')
+            # print(i, '------------------')
             print(direction_items)
             curr_direction_item = direction_items[i-1]
-            
+
             print("Ingredients:", curr_direction_item[0])
             print("Tools:", curr_direction_item[1])
             print("Methods:", curr_direction_item[2])
-            print("Times:", curr_direction_item[3])
-            i += 1 
+            print("Additional methods:", curr_direction_item[3])
+            print("Times:", curr_direction_item[4])
+            i += 1
             print('-----------------------------------')
         print("\n")
 
         print("Tools needed:", self.tools)
         print("Methods required:", self.methods)
-        print("Primary cooking method:", "INSERT HERE")
+        print("Primary cooking method:", self.get_primary_cooking_method())
         print("\n")
         print("---------------------------------------------------------------------------------")
-        
+
+
+    def get_primary_cooking_method(self):
+        direction_items = self.get_ingredients_tools_methods_times()
+        index = 1
+        curr_direction_item = direction_items[index-1]
+        times = curr_direction_item[3]
+        methods = self.methods
+
+        if len(self.methods) > 1:
+            for method in self.methods:
+                for time in times:
+                    if time >= biggest_time:
+                        biggest_time = time
+                        primary_method = method
+        else:
+            primary_method = self.methods
+
+        return primary_method
+
+
     def to_healthy(self):
         # returns a copy of healthy version of recipe
 
@@ -427,8 +448,6 @@ class Recipe(object):
                 if unhealthy_ing in curr_direction:
                     curr_direction = curr_direction.replace(unhealthy_ing, healthy_substitutes[unhealthy_ing])
                     healthy_directions[i] = curr_direction
-                    #print(unhealthy_ing)
-                    #print(healthy_substitutes[unhealthy_ing])
 
         healthy_recipe = copy.deepcopy(self)
 
@@ -454,10 +473,6 @@ class Recipe(object):
                 if healthy_ing in curr_direction:
                     curr_direction = curr_direction.replace(healthy_ing, unhealthy_substitutes[healthy_ing])
                     unhealthy_directions[i] = curr_direction
-                    #print(curr_direction)
-                # elif "bake" in curr_direction:
-                #     curr_direction = curr_direction.replace("bake", "fry")
-                #     unhealthy_directions[i] = curr_direction
 
         unhealthy_recipe = copy.deepcopy(self)
 
@@ -546,7 +561,7 @@ class Recipe(object):
                     if 'ground' in meat:
                         meat_tokens = meat.split(' ')
                         exclude_list.append(meat_tokens[1])
-    
+
         return output
 
 
@@ -558,9 +573,18 @@ class Recipe(object):
             tools = self.get_tools(self.tools, direction)
             methods = self.get_methods(self.methods, direction)
             times = self.get_times(direction)
-            output.append([ingredients, tools, methods, times])
+            other_methods = self.get_other_methods(direction)
+            output.append([ingredients, tools, methods, other_methods, times])
 
         return output
+
+    def get_other_methods(self, direction):
+        OTHER_COOKING_METHODS = ["chop", "grate", "stir", "shake", "mince", "crush", "squeeze", "julienne", "slice", "baste", "fillet", "garnish"]
+        methods_in_direction = []
+        for method in OTHER_COOKING_METHODS:
+            if method in direction:
+                methods_in_direction.append(method)
+        return methods_in_direction
 
     def get_ingredients(self, ingredients, direction):
         global STOP_WORDS
@@ -689,8 +713,8 @@ class Recipe(object):
             "binder": [],
         }
 
-        # chinese version of recipe json 
-        ch_json = self.recipe_dic.copy() 
+        # chinese version of recipe json
+        ch_json = self.recipe_dic.copy()
         ch_json["name"] = [self.recipe_name[0] + " (" + cuisine.capitalize() + " Style)"]
 
         for ingredient in self.ingredients:
@@ -722,6 +746,6 @@ class Recipe(object):
                 new_ing.append(ing)
         ch_json["ingredients"] = new_ing
         ch_json["nutrition"].append("* Disclaimer: nutrition facts may differ post recipe transformation *")
-        
+
         trans_recipe = Recipe(ch_json)
         return trans_recipe
