@@ -357,6 +357,7 @@ class Recipe(object):
         self.tools = recipe_dic['tools']
         # set methods
         self.methods = recipe_dic['methods']
+        # set url
         self.url = recipe_dic["top_url"]
 
         fruits = set([line.strip() for line in open('./ingredient_data/fruits.txt')])
@@ -415,8 +416,8 @@ class Recipe(object):
         index = 1
         curr_direction_item = direction_items[index-1]
         times = curr_direction_item[3]
-        methods = self.methods
-
+        primary_method = ""
+        
         if len(self.methods) > 1:
             for method in self.methods:
                 for time in times:
