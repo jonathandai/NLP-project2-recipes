@@ -1,7 +1,9 @@
 import nltk
 import re
+import unicodedata
 from nltk import pos_tag
-
+from nltk.corpus import stopwords
+STOP_WORDS =  set(stopwords.words('english'))
 VALID_UNITS = ['teaspoon', 'teaspoons', 'tablespoon', 'tablespoons', 'pound', 'pounds', 'ounce', 'ounces', 'cup', 'cups']
 
 healthy_substitutes = {
@@ -30,10 +32,21 @@ unhealthy_substitutes = {
     'sweet potato' : 'potato',
     'yogurt' : 'sour cream'
 }
+
 class Ingredient(object):
 
+
+
+        
     def __init__(self, ingredient_string):
         # TODO: Deal with parsing for standarized units
+        vulgar_shit_list = self.fraction_finder(ingredient_string)
+
+        for vulgar_shit, replacement in vulgar_shit_list.items():
+            nice_shit = str(replacement[0]) + '/' + str(replacement[1])
+            ingredient_string = ingredient_string.replace(vulgar_shit, nice_shit)
+            print(ingredient_string)
+
         if '(' in ingredient_string and ')' in ingredient_string:
             substring = ingredient_string[ingredient_string.find("(")+1:ingredient_string.find(")")]
             substring_tokens = substring.split(' ')
@@ -45,6 +58,22 @@ class Ingredient(object):
             new_start_index = tokens.index(substring_tokens[1]+')') + 2
             name_tokens = tokens[new_start_index:]
             name =  ' '.join(name_tokens)
+            prep = ""
+            if ", " in name:
+                name_split_comma = name.split(',', 1)
+                name = name_split_comma[0]
+                prep = name_split_comma[1]
+
+            descriptors = []
+            if len(name.split()) > 1:
+                for i, name in enumerate(name.split()):
+                    if i != len(name.split())+1:
+                        descriptors.append(name)
+        # elif '-' in ingredient_string:
+        #     do = 'something'
+        #     unit = ""
+        #     name = ""
+        #     quantity = ''
         else:
             text = nltk.word_tokenize(ingredient_string)
             tagged_text = nltk.pos_tag(text)
@@ -81,6 +110,9 @@ class Ingredient(object):
             for i, name in enumerate(name.split()):
                 if i != len(name.split())+1:
                     descriptors.append(name)
+        global STOP_WORDS
+        descriptors = [w for w in descriptors if w != name]
+        descriptors = [w for w in descriptors if w not in STOP_WORDS]
 
 
 
@@ -109,3 +141,15 @@ class Ingredient(object):
             if meat in self.name:
                 self.name = substitute
                 return
+    def fraction_finder(self, s):
+        vulgar_shit = {}
+        for c in s:
+            try:
+                name = unicodedata.name(c)
+            except ValueError:
+                continue
+            if name.startswith('VULGAR FRACTION'):
+                normalized = unicodedata.normalize('NFKC', c)
+                numerator, _slash, denominator = normalized.partition('⁄')
+                vulgar_shit[c] = [ int(numerator), int(denominator)]
+        return vulgar_shit
