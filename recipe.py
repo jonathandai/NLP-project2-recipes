@@ -392,7 +392,7 @@ class Recipe(object):
         for dir in self.directions:
             print("Step", i, ":" , dir)
             # print(i, '------------------')
-            print(direction_items)
+            # print(direction_items)
             curr_direction_item = direction_items[i-1]
 
             print("Ingredients:", curr_direction_item[0])
@@ -418,7 +418,7 @@ class Recipe(object):
         times = curr_direction_item[3]
         methods = self.methods
         biggest_time = "0"
-
+        primary_method = ''
         if len(self.methods) > 1:
             for method in self.methods:
                 for time in times:
@@ -490,7 +490,7 @@ class Recipe(object):
         methods = ['boil', 'bake','simmer','roast','fry','deep fry','deep-fry','stiry fry','stir-fry','grill','steam','sautee']
         meats_to_cooking_method = self.map_meat_to_cooking_method(self.directions, methods)
         meats_to_subtitute = self.meat_to_substitute(meats_to_cooking_method)
-        print(meats_to_subtitute)
+        # print(meats_to_subtitute)
         # make ingredients veg
         veg_ingredients = copy.deepcopy(self.ingredients)
         for ingredient in veg_ingredients:
