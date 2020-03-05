@@ -377,6 +377,7 @@ class Recipe(object):
         }
 
     def print_recipe(self):
+        do = '69'
         print("Recipe Name:", self.recipe_name[0])
         print("Recipe URL:", self.url, "\n")
         print("Ingredients:")
